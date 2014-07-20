@@ -1,7 +1,84 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.swym.app.MainActivity"
-    tools:ignore="MergeRootFrame" />
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/container"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="com.swym.app.MainActivity"
+tools:ignore="MergeRootFrame" >
+
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Remaining Budget"
+                android:gravity="center"
+                android:id="@+id/textView"
+                android:layout_weight="0.1"
+                android:textSize="20dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="$100.00"
+                android:gravity="center"
+                android:id="@+id/textView2"
+                android:layout_weight="0.5"
+                android:textSize="65dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Current Savings"
+                android:gravity="center"
+                android:id="@+id/textView4"
+                android:layout_weight="0.1"
+                android:textSize="20dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Large Text"
+                android:gravity="center"
+                android:id="@+id/textView3"
+                android:layout_weight="0.3"
+                android:textSize="30dp"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_below="@+id/textView"
+                android:weightSum="1">
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:text="Add Purchase"
+                    android:id="@+id/addPurchase"
+                    android:layout_weight=".5"
+                    android:clickable="true"
+                    android:onClick="onClick"/>
+
+                <Button
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:text="Add Funds"
+                    android:id="@+id/addFunds"
+                    android:layout_weight=".5"
+                    android:clickable="true" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

@@ -2,7 +2,20 @@
 <resources>
 
     <string name="app_name">Swym</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="cancelButtonText">Cancel</string>
+    <string name="saveButtonText">Save</string>
+    <string name="Purchase">Purchase</string>
+    <string name="PurchaseHint">Burrito, Beer</string>
+    <string name="Cost">Cost</string>
+    <string name="DollarSign">$</string>
+    <string name="CostHint">23.43</string>
+    <string name="Tag">Tag</string>
+    <string name="Description">Description</string>
+    <string name="DescriptionHint">From the deli. Paid for Tyler too.</string>
+    <string name="title_section1">Budget</string>
+    <string name="title_section2">Something else</string>
+    <string name="title_section3">Data</string>
+    <string name="title_activity_add_purchase">AddPurchase</string>
 
 </resources>
