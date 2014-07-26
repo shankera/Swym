@@ -14,7 +14,7 @@
     <string name="Description">Description</string>
     <string name="DescriptionHint">From the deli. Paid for Tyler too.</string>
     <string name="title_section1">Budget</string>
-    <string name="title_section2">Something else</string>
+    <string name="title_section2">Log</string>
     <string name="title_section3">Data</string>
     <string name="title_activity_add_purchase">AddPurchase</string>
 
