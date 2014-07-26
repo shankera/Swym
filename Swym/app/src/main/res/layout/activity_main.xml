@@ -67,7 +67,8 @@ tools:ignore="MergeRootFrame" >
                     android:text="Add Purchase"
                     android:id="@+id/addPurchase"
                     android:layout_weight=".5"
-                    android:clickable="true"/>
+                    android:clickable="true"
+                    android:onClick="onClick"/>
 
                 <Button
                     android:layout_width="fill_parent"
