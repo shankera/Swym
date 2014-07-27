@@ -1,20 +1,18 @@
 package com.swym.app;
 
-import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import java.util.Locale;
 
@@ -38,7 +36,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.true_main);
+        setContentView(R.layout.activity_main);
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -69,22 +67,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             // the TabListener interface, as the callback (listener) for when
             // this tab is selected.
             actionBar.addTab(actionBar.newTab()
-                            .setText(mSectionsPagerAdapter.getPageTitle(i))
-                            .setTabListener(this));
-        }
-    }
-    @Override
-    public void onStart(){
-        super.onStart();
-        Button button = (Button) findViewById(R.id.addPurchase);
-        if(button != null) {
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent appPurchase = new Intent(MainActivity.this, AddPurchase.class);
-                    MainActivity.this.startActivity(appPurchase);
-                }
-            });
+                    .setText(mSectionsPagerAdapter.getPageTitle(i))
+                    .setTabListener(this));
         }
     }
 
@@ -121,6 +105,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
+        private static final int POSITION_BUDGET = 0;
+        private static final int POSITION_LOG = 1;
+        private static final int POSITION_DATA = 2;
 
         public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -130,7 +117,16 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            switch (position) {
+                case POSITION_BUDGET:
+                    return BudgetFragment.newInstance();
+                case POSITION_LOG:
+                    return PlaceholderFragment.newInstance(position + 1);
+                case POSITION_DATA:
+                    return PlaceholderFragment.newInstance(position + 1);
+                default:
+                    throw new IllegalStateException("Got an unexpected fragment position");
+            }
         }
 
         @Override
@@ -143,19 +139,20 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         public CharSequence getPageTitle(int position) {
             Locale l = Locale.getDefault();
             switch (position) {
-                case 0:
+                case POSITION_BUDGET:
                     state = 1;
                     return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
+                case POSITION_LOG:
                     state = 2;
                     return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
+                case POSITION_DATA:
                     state = 3;
                     return getString(R.string.title_section3).toUpperCase(l);
             }
             return null;
         }
     }
+
     public static class PlaceholderFragment extends Fragment {
         /**
          * The fragment argument representing the section number for this
@@ -163,8 +160,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
 
-        public PlaceholderFragment(){
+        public PlaceholderFragment() {
         }
+
         public static PlaceholderFragment newInstance(int sectionNumber) {
             PlaceholderFragment f = new PlaceholderFragment();
             Bundle args = new Bundle();
@@ -174,15 +172,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = null;
-            if(getArguments().getInt(ARG_SECTION_NUMBER) == 1){
-                rootView = inflater.inflate(R.layout.activity_main, container, false);
-            }else {
-                rootView = inflater.inflate(R.layout.true_main, container, false);
-            }
-            return rootView;
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            return inflater.inflate(R.layout.fragment_placeholder, container, false);
         }
     }
 
