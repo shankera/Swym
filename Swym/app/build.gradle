@@ -1,12 +1,17 @@
-apply plugin: 'android'
+// Because the 'android' plugin is deprecated
+apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
+
+    // Because we raised the targetSdkVersion
+    compileSdkVersion 20
     buildToolsVersion '19.1.0'
 
     defaultConfig {
         minSdkVersion 7
-        targetSdkVersion 19
+
+        // Raise the target to shut up lint more than anything else
+        targetSdkVersion 20
         versionCode 1
         versionName "1.0"
     }
@@ -19,5 +24,6 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:+'
+    // Need to add that it caps out at 20. Some devs have the 'L' preview which breaks the build otherwise
+    compile 'com.android.support:appcompat-v7:20.+'
 }
