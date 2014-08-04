@@ -39,7 +39,7 @@ tools:ignore="MergeRootFrame" >
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Current Savings"
+                android:text="Current Balance"
                 android:gravity="center"
                 android:id="@+id/textView4"
                 android:layout_weight="0.1"
@@ -48,7 +48,7 @@ tools:ignore="MergeRootFrame" >
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Large Text"
+                android:text="$1984.23"
                 android:gravity="center"
                 android:id="@+id/textView3"
                 android:layout_weight="0.3"
