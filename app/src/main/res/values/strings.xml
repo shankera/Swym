@@ -18,6 +18,8 @@
     <string name="title_section3">Data</string>
     <string name="title_activity_add_purchase">Add Purchase</string>
     <string name="title_activity_add_funds">Add Funds</string>
+    <string name="title_activity_set_budget">Add Funds</string>
     <string name="fundsExpl">Please enter any recent income.</string>
+    <string name="budgExpl">Please enter your monthly budget.</string>
 
 </resources>

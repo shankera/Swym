@@ -23,7 +23,7 @@ tools:ignore="MergeRootFrame" >
                 android:layout_height="wrap_content"
                 android:text="Remaining Budget"
                 android:gravity="center"
-                android:id="@+id/textView"
+                android:id="@+id/budgetlabel"
                 android:layout_weight="0.1"
                 android:textSize="20dp" />
 
@@ -32,16 +32,17 @@ tools:ignore="MergeRootFrame" >
                 android:layout_height="wrap_content"
                 android:text="$100.00"
                 android:gravity="center"
-                android:id="@+id/textView2"
+                android:id="@+id/budgetshow"
                 android:layout_weight="0.5"
-                android:textSize="65dp"/>
+                android:textSize="65dp"
+                android:clickable="true"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Current Balance"
                 android:gravity="center"
-                android:id="@+id/textView4"
+                android:id="@+id/balancelabel"
                 android:layout_weight="0.1"
                 android:textSize="20dp"/>
 
@@ -50,7 +51,7 @@ tools:ignore="MergeRootFrame" >
                 android:layout_height="wrap_content"
                 android:text="$1984.23"
                 android:gravity="center"
-                android:id="@+id/textView3"
+                android:id="@+id/balanceshow"
                 android:layout_weight="0.3"
                 android:textSize="30dp"/>
 

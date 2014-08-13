@@ -25,13 +25,21 @@
             </intent-filter>
         </activity>
         <activity
-        android:name="com.swym.app.AddFunds"
-        android:label="@string/title_activity_add_funds" >
-        <intent-filter>
-            <action android:name="com.swym.app.AddFunds" />
-            <category android:name="android.intent.category.DEFAULT" />
-        </intent-filter>
-    </activity>
+            android:name="com.swym.app.AddFunds"
+            android:label="@string/title_activity_add_funds" >
+            <intent-filter>
+                <action android:name="com.swym.app.AddFunds" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.swym.app.SetBudget"
+            android:label="@string/title_activity_set_budget" >
+            <intent-filter>
+                <action android:name="com.swym.app.SetBudget" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

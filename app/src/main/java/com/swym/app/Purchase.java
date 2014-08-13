@@ -1,9 +1,11 @@
 package com.swym.app;
 
+import java.io.Serializable;
+
 /**
  * Created by Arjun Shanker on 7/19/14.
  */
-public class Purchase {
+public class Purchase implements Datum{
     private String name;
     private double cost;
     private String description;
