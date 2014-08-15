@@ -6,13 +6,17 @@
     <string name="cancelButtonText">Cancel</string>
     <string name="saveButtonText">Save</string>
     <string name="Purchase">Purchase</string>
+    <string name="Income">Income Source</string>
     <string name="PurchaseHint">Burrito, Beer</string>
+    <string name="IncomeHint">Paycheck</string>
     <string name="Cost">Cost</string>
     <string name="DollarSign">$</string>
     <string name="CostHint">23.43</string>
+    <string name="FundHint">923.43</string>
     <string name="Tag">Tag</string>
     <string name="Description">Description</string>
     <string name="DescriptionHint">From the deli. Paid for Tyler too.</string>
+    <string name="FundDescriptionHint">Worked overtime</string>
     <string name="title_section1">Budget</string>
     <string name="title_section2">Log</string>
     <string name="title_section3">Data</string>

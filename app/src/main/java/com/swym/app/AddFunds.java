@@ -1,5 +1,6 @@
 package com.swym.app;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -29,6 +30,24 @@ public class AddFunds extends ActionBarActivity {
         findViewById(R.id.saveButton).setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+                Intent data = new Intent();
+                Fund f = new Fund();
+                EditText purchaseField = (EditText) findViewById(R.id.enterPurchase);
+                EditText costField = (EditText) findViewById(R.id.enterCost);
+                EditText descField = (EditText) findViewById(R.id.enterDescription);
+                if(!purchaseField.getText().toString().equals("") && !costField.getText().toString().equals("")){
+                    if(!descField.getText().toString().equals("")){
+                        f.setDescription(descField.getText().toString());
+                    }
+                    f.setCost(Double.parseDouble(costField.getText().toString()));
+                    f.setName(purchaseField.getText().toString());
+                    data.putExtra("Fund", (Serializable) f);
+                    setResult(Activity.RESULT_OK, data);
+                    finish();
+                }else{
+                    Toast t = Toast.makeText(getApplication(), "Income and Cost cannot be empty", Toast.LENGTH_SHORT);
+                    t.show();
+                }
             }
         });
 
