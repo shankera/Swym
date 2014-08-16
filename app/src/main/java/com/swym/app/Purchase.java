@@ -1,15 +1,14 @@
 package com.swym.app;
 
-import java.io.Serializable;
-
 /**
  * Created by Arjun Shanker on 7/19/14.
  */
-public class Purchase implements Datum{
+public class Purchase implements Transaction {
     private String name;
     private double cost;
     private String description;
     private String tag;
+    private long id;
 
     public void setName(String name){
         this.name = name;
@@ -32,6 +31,15 @@ public class Purchase implements Datum{
     public String getDescription(){
         return description;
     }
+    @Override
+    public void setId(long id) {
+        this.id = id;
+    }
+    @Override
+    public long getId() {
+        return id;
+    }
+
     public String getTag(){
         return tag;
     }

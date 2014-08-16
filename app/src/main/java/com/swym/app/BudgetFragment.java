@@ -1,7 +1,6 @@
 package com.swym.app;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,12 +13,14 @@ import android.widget.TextView;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 public class BudgetFragment extends Fragment {
+    private TransactionDataSource datasource;
     private final int purchaseRequestCode = 309;
     private final int fundsRequestCode = 515;
     private final int budgetRequestCode = 801;
-    private ArrayList<Datum> data = new ArrayList<Datum>();
+    private List<Transaction> transactions;
     private View v;
     private double budgetVal;
     private double fundsVal;
@@ -57,7 +58,10 @@ public class BudgetFragment extends Fragment {
             }
         });
         myPrefs = getActivity().getApplicationContext().getSharedPreferences("com.swym.app", Activity.MODE_PRIVATE);
+        datasource = new TransactionDataSource(getActivity().getApplicationContext());
+        datasource.open();
 
+        transactions = datasource.getAllTransactions();
         v = view;
 
         NumberFormat fmt = NumberFormat.getCurrencyInstance();
@@ -83,9 +87,14 @@ public class BudgetFragment extends Fragment {
             NumberFormat fmt = NumberFormat.getCurrencyInstance();
             budgetVal = myPrefs.getFloat("Budget", 0.00f);
             double updatedBudget = budgetVal;
-            for(Datum d: data){
-                if(d instanceof Purchase)
+            for(Transaction d: transactions){
+                if(d instanceof Purchase) {
                     updatedBudget = updatedBudget - d.getCost();
+                    fundsVal = fundsVal - d.getCost();
+                }
+                else{
+                    fundsVal = fundsVal +d.getCost();
+                }
             }
             bs.setText(fmt.format(updatedBudget));
 
@@ -103,15 +112,17 @@ public class BudgetFragment extends Fragment {
             case(purchaseRequestCode):
                 if(resultCode == Activity.RESULT_OK){
                     Purchase p = (Purchase) intent.getExtras().getSerializable("Purchase");
-                    data.add(p);
+                    transactions.add(p);
                     double updatedBudget = budgetVal;
-                    for(Datum d: data){
-                        if(d instanceof Purchase)
+                    for(Transaction d: transactions){
+                        if(d instanceof Purchase) {
                             updatedBudget = updatedBudget - d.getCost();
+                            fundsVal -= d.getCost();
+                        }
+                        else{
+                            fundsVal += d.getCost();
+                        }
                     }
-                    fundsVal -=p.getCost();
-                    edit.putFloat("Fund", Float.parseFloat(String.valueOf(fundsVal)));
-                    edit.commit();
                     String str = fmt.format(updatedBudget);
                     bs.setText(str);
                     fs.setText(fmt.format(fundsVal));
@@ -120,7 +131,7 @@ public class BudgetFragment extends Fragment {
             case(fundsRequestCode):
                 if(resultCode == Activity.RESULT_OK){
                     Fund f = (Fund) intent.getExtras().getSerializable("Fund");
-                    data.add(f);
+                    transactions.add(f);
                     fundsVal += f.getCost();
                     edit.putFloat("Fund", Float.parseFloat(String.valueOf(fundsVal)));
                     edit.commit();
@@ -140,5 +151,12 @@ public class BudgetFragment extends Fragment {
                 break;
         }
     }
-
+    public void onResume(){
+        datasource.open();
+        super.onResume();
+    }
+    public void onPause(){
+        datasource.close();
+        super.onPause();
+    }
 }

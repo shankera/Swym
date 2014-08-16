@@ -3,10 +3,11 @@ package com.swym.app;
 /**
  * Created by Arjun on 8/4/2014.
  */
-public class Fund implements Datum{
+public class Fund implements Transaction {
     private String name;
     private double cost;
     private String desc;
+    private long id;
     @Override
     public void setName(String name) {
         this.name = name;
@@ -35,5 +36,15 @@ public class Fund implements Datum{
     @Override
     public String getDescription() {
         return desc;
+    }
+
+    @Override
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Override
+    public long getId() {
+        return id;
     }
 }

@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Arjun on 8/4/2014.
  */
-public interface Datum extends Serializable {
+public interface Transaction extends Serializable {
 
     public void setName(String name);
     public void setCost(double cost);
@@ -13,4 +13,6 @@ public interface Datum extends Serializable {
     public String getName();
     public double getCost();
     public String getDescription();
+    public void setId(long id);
+    public long getId();
 }
