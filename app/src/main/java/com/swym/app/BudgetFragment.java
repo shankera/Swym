@@ -5,14 +5,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 public class BudgetFragment extends Fragment {
@@ -27,7 +25,6 @@ public class BudgetFragment extends Fragment {
     private TextView bs;
     private TextView fs;
     private SharedPreferences myPrefs;
-    private boolean bool = false;
 
     public static BudgetFragment newInstance() {
         return new BudgetFragment();
@@ -36,6 +33,8 @@ public class BudgetFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_budget, container, false);
+
+        //OnClickListener for the add purchase button
         view.findViewById(R.id.addPurchase).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -43,6 +42,8 @@ public class BudgetFragment extends Fragment {
                 startActivityForResult(addIntent, purchaseRequestCode);
             }
         });
+
+        //OnClickListener for the add funds button
         view.findViewById(R.id.addFunds).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,6 +51,8 @@ public class BudgetFragment extends Fragment {
                 startActivityForResult(addFunds,fundsRequestCode);
             }
         });
+
+        //OnClickListener for the budget label
         view.findViewById(R.id.budgetshow).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,49 +61,37 @@ public class BudgetFragment extends Fragment {
             }
         });
         myPrefs = getActivity().getApplicationContext().getSharedPreferences("com.swym.app", Activity.MODE_PRIVATE);
-        datasource = new TransactionDataSource(getActivity().getApplicationContext());
+        datasource = MainActivity.getDatasource();
         datasource.open();
 
+        //copies all transactions from the datasource
         transactions = datasource.getAllTransactions();
         v = view;
 
         NumberFormat fmt = NumberFormat.getCurrencyInstance();
         bs = (TextView) v.findViewById(R.id.budgetshow);
-        budgetVal = myPrefs.getFloat("Budget",0.00f);
-        fundsVal = myPrefs.getFloat("Fund",0.00f);
-
-        if(bs != null)
-            bs.setText(fmt.format(budgetVal));
         fs = (TextView) v.findViewById(R.id.balanceshow);
+        budgetVal = myPrefs.getFloat("Budget", 0.00f);
+        fundsVal = myPrefs.getFloat("Fund", 0.00f);
 
-        if(fs != null)
+        double updatedBudget = budgetVal;
+
+        if(transactions != null) {
+            //calculates any expenditures and deducts from the budget
+            for (Transaction d : transactions) {
+                if (d instanceof Purchase) {
+                    updatedBudget = updatedBudget - d.getCost();
+                }
+            }
+
+            bs.setText(fmt.format(updatedBudget));
             fs.setText(fmt.format(fundsVal));
-        bool = true;
-        Log.e(bool + "", budgetVal + "");
+        }
         return v;
     }
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        if(bool){
-
-            NumberFormat fmt = NumberFormat.getCurrencyInstance();
-            budgetVal = myPrefs.getFloat("Budget", 0.00f);
-            double updatedBudget = budgetVal;
-            for(Transaction d: transactions){
-                if(d instanceof Purchase) {
-                    updatedBudget = updatedBudget - d.getCost();
-                    fundsVal = fundsVal - d.getCost();
-                }
-                else{
-                    fundsVal = fundsVal +d.getCost();
-                }
-            }
-            bs.setText(fmt.format(updatedBudget));
-
-            fundsVal = myPrefs.getFloat("Fund", 0.00f);
-            fs.setText(fmt.format(fundsVal));
-        }
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
@@ -113,50 +104,59 @@ public class BudgetFragment extends Fragment {
                 if(resultCode == Activity.RESULT_OK){
                     Purchase p = (Purchase) intent.getExtras().getSerializable("Purchase");
                     transactions.add(p);
+                    datasource.createTransaction(p.getName(), p.getCost(), p.getDescription(), "Purchase");
                     double updatedBudget = budgetVal;
+                    double fundsBudget = 0.00;
                     for(Transaction d: transactions){
                         if(d instanceof Purchase) {
                             updatedBudget = updatedBudget - d.getCost();
-                            fundsVal -= d.getCost();
+                            fundsBudget -= d.getCost();
                         }
                         else{
-                            fundsVal += d.getCost();
+                            fundsBudget += d.getCost();
                         }
                     }
                     String str = fmt.format(updatedBudget);
                     bs.setText(str);
-                    fs.setText(fmt.format(fundsVal));
+
+                    edit.putFloat("Fund", Float.parseFloat(String.valueOf(fundsBudget)));
+                    edit.commit();
+                    fs.setText(fmt.format(fundsBudget));
                 }
                 break;
             case(fundsRequestCode):
                 if(resultCode == Activity.RESULT_OK){
                     Fund f = (Fund) intent.getExtras().getSerializable("Fund");
                     transactions.add(f);
-                    fundsVal += f.getCost();
-                    edit.putFloat("Fund", Float.parseFloat(String.valueOf(fundsVal)));
+                    datasource.createTransaction(f.getName(), f.getCost(), f.getDescription(), "Fund");
+                    double fundsBudget = 0.00;
+                    for(Transaction d: transactions){
+                        if(d instanceof Purchase) {
+                            fundsBudget -= d.getCost();
+                        }
+                        else{
+                            fundsBudget += d.getCost();
+                        }
+                    }
+                    edit.putFloat("Fund", Float.parseFloat(String.valueOf(fundsBudget)));
                     edit.commit();
-                    fs.setText(fmt.format(fundsVal));
-
+                    fs.setText(fmt.format(fundsBudget));
                 }
                 break;
             case(budgetRequestCode):
                 if(resultCode == Activity.RESULT_OK){
                     this.budgetVal = intent.getExtras().getDouble("Budget");
+                    double updatedBudget = budgetVal;
+                    for(Transaction d: transactions){
+                        if(d instanceof Purchase) {
+                            updatedBudget = updatedBudget - d.getCost();
+                    }
                     edit.putFloat("Budget", Float.parseFloat(String.valueOf(budgetVal)));
                     edit.commit();
-                    bs.setText(fmt.format(budgetVal));
-
-                    Log.e(bool + "", budgetVal + "");
+                    bs.setText(fmt.format(updatedBudget));
                 }
                 break;
+            }
         }
-    }
-    public void onResume(){
-        datasource.open();
-        super.onResume();
-    }
-    public void onPause(){
-        datasource.close();
-        super.onPause();
     }
 }

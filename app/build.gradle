@@ -5,7 +5,7 @@ android {
 
     // Because we raised the targetSdkVersion
     compileSdkVersion 20
-    buildToolsVersion '19.1.0'
+    buildToolsVersion "20"
 
     defaultConfig {
         minSdkVersion 7
@@ -15,10 +15,24 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    signingConfigs {
+        release {
+            storeFile file("thingfile")
+            storePassword "thingpass"
+            keyAlias "thingalias"
+            keyPassword "otherthingpass"
+        }
+    }
     buildTypes {
         release {
             runProguard false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.release
+        }
+        debug {
+//            testCoverageEnabled true
+            versionNameSuffix ".debug"
+            applicationIdSuffix ".debug"
         }
     }
 }

@@ -28,6 +28,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
      */
     SectionsPagerAdapter mSectionsPagerAdapter;
 
+    private static TransactionDataSource datasource;
     /**
      * The {@link android.support.v4.view.ViewPager} that will host the section contents.
      */
@@ -37,6 +38,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        datasource = new TransactionDataSource(getApplicationContext());
+        datasource.open();
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -177,4 +180,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         }
     }
 
+    public void onResume(){
+        datasource.open();
+        super.onResume();
+    }
+    public void onPause(){
+        super.onPause();
+    }
+    protected static TransactionDataSource getDatasource(){
+        return datasource;
+    }
 }

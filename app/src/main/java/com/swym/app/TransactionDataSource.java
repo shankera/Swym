@@ -16,8 +16,8 @@ public class TransactionDataSource {
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
     private String[] allColumns = {MySQLiteHelper.COLUMN_ID, MySQLiteHelper.COLUMN_NAME,
-            MySQLiteHelper.COLUMN_TYPE, MySQLiteHelper.COLUMN_COST,
-            MySQLiteHelper.COLUMN_DESCRIPTION};
+            MySQLiteHelper.COLUMN_COST, MySQLiteHelper.COLUMN_DESCRIPTION,
+            MySQLiteHelper.COLUMN_TYPE};
 
     public TransactionDataSource(Context context){
         dbHelper = new MySQLiteHelper(context);
@@ -31,7 +31,7 @@ public class TransactionDataSource {
         dbHelper.close();
     }
 
-    public Transaction createTransaction(String name, double cost, String type, String desc){
+    public synchronized Transaction createTransaction(String name, double cost, String desc, String type){
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_NAME, name);
         values.put(MySQLiteHelper.COLUMN_COST, cost);

@@ -4,14 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import java.io.Serializable;
 
 /**
  * Created by Arjun on 8/12/2014.
@@ -35,7 +31,6 @@ public class SetBudget extends ActionBarActivity {
                 Purchase p = new Purchase();
                 EditText budgetField = (EditText) findViewById(R.id.enterBudget);
                 if (!budgetField.getText().toString().equals("")) {
-                    Log.e("fuck","fiasdfasdf");
                     data.putExtra("Budget", Double.parseDouble(budgetField.getText().toString()));
                     setResult(Activity.RESULT_OK, data);
                     finish();
