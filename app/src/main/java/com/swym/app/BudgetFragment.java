@@ -3,12 +3,22 @@ package com.swym.app;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.swym.app.data.Fund;
+import com.swym.app.data.Purchase;
+import com.swym.app.data.Transaction;
+import com.swym.app.data.TransactionDataSource;
+import com.swym.app.popups.AddFunds;
+import com.swym.app.popups.AddPurchase;
+import com.swym.app.popups.SetBudget;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -25,6 +35,7 @@ public class BudgetFragment extends Fragment {
     private TextView bs;
     private TextView fs;
     private SharedPreferences myPrefs;
+    private boolean firstTimeRun;
 
     public static BudgetFragment newInstance() {
         return new BudgetFragment();
@@ -52,17 +63,23 @@ public class BudgetFragment extends Fragment {
             }
         });
 
-        //OnClickListener for the budget label
-        view.findViewById(R.id.budgetshow).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent setBudget = new Intent(getActivity(), SetBudget.class);
-                startActivityForResult(setBudget,budgetRequestCode);
-            }
-        });
         myPrefs = getActivity().getApplicationContext().getSharedPreferences("com.swym.app", Activity.MODE_PRIVATE);
         datasource = MainActivity.getDatasource();
         datasource.open();
+
+        budgetVal = myPrefs.getFloat("Budget", 0.00f);
+        fundsVal = myPrefs.getFloat("Fund", 0.00f);
+
+        firstTimeRun = myPrefs.getBoolean("FirstTime", true);
+
+        if(firstTimeRun){
+            firstTimeRun = false;
+            SharedPreferences.Editor edit = myPrefs.edit();
+            edit.putBoolean("FirstTime", false);
+            edit.commit();
+            Intent setBudget = new Intent(getActivity(), SetBudget.class);
+            startActivityForResult(setBudget,budgetRequestCode);
+        }
 
         //copies all transactions from the datasource
         transactions = datasource.getAllTransactions();
@@ -71,20 +88,11 @@ public class BudgetFragment extends Fragment {
         NumberFormat fmt = NumberFormat.getCurrencyInstance();
         bs = (TextView) v.findViewById(R.id.budgetshow);
         fs = (TextView) v.findViewById(R.id.balanceshow);
-        budgetVal = myPrefs.getFloat("Budget", 0.00f);
-        fundsVal = myPrefs.getFloat("Fund", 0.00f);
 
         double updatedBudget = budgetVal;
 
         if(transactions != null) {
-            //calculates any expenditures and deducts from the budget
-            for (Transaction d : transactions) {
-                if (d instanceof Purchase) {
-                    updatedBudget = updatedBudget - d.getCost();
-                }
-            }
-
-            bs.setText(fmt.format(updatedBudget));
+            updateTextView(fmt);
             fs.setText(fmt.format(fundsVal));
         }
         return v;
@@ -116,6 +124,16 @@ public class BudgetFragment extends Fragment {
                             fundsBudget += d.getCost();
                         }
                     }
+                    if(updatedBudget < (.25*budgetVal)){
+                        bs.setTextColor(Color.YELLOW);
+                    }
+                    else if(updatedBudget<=0){
+                        Log.e("sadfasdf", updatedBudget+"");
+                        bs.setTextColor(Color.RED);
+                    }
+                    else{
+                        bs.setTextColor(Color.GREEN);
+                    }
                     String str = fmt.format(updatedBudget);
                     bs.setText(str);
 
@@ -146,17 +164,40 @@ public class BudgetFragment extends Fragment {
             case(budgetRequestCode):
                 if(resultCode == Activity.RESULT_OK){
                     this.budgetVal = intent.getExtras().getDouble("Budget");
-                    double updatedBudget = budgetVal;
-                    for(Transaction d: transactions){
-                        if(d instanceof Purchase) {
-                            updatedBudget = updatedBudget - d.getCost();
-                    }
-                    edit.putFloat("Budget", Float.parseFloat(String.valueOf(budgetVal)));
-                    edit.commit();
-                    bs.setText(fmt.format(updatedBudget));
+                    updateTextView(fmt);
                 }
+                edit.putFloat("Budget", Float.parseFloat(String.valueOf(budgetVal)));
+                edit.commit();
                 break;
-            }
         }
     }
+    @Override
+    public void onResume(){
+        super.onResume();
+        budgetVal = myPrefs.getFloat("Budget", 0.00f);
+        updateTextView(NumberFormat.getCurrencyInstance());
+    }
+    //calculates any expenditures and deducts from the budget then updates the textview
+    private void updateTextView(NumberFormat fmt){
+        double updatedBudget = budgetVal;
+        for(Transaction d: transactions) {
+            if (d instanceof Purchase) {
+                updatedBudget = updatedBudget - d.getCost();
+            }
+        }
+
+        if(updatedBudget<=0.00){
+            Log.e("sadfasdf", updatedBudget+"");
+            bs.setTextColor(Color.RED);
+        }else if(updatedBudget < (.25*budgetVal)){
+            Log.e("sadfasdf", updatedBudget+"");
+            bs.setTextColor(Color.YELLOW);
+        }
+        else{
+            bs.setTextColor(Color.GREEN);
+        }
+        bs.setText(fmt.format(updatedBudget));
+
+    }
+
 }
