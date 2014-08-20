@@ -39,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/DollarSign"
-                    android:id="@+id/textView4" />
+                    android:id="@+id/moneySign" />
 
                 <EditText
                     android:layout_width="wrap_content"

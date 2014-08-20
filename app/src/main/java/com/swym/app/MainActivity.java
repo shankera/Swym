@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.swym.app.data.Purchase;
 import com.swym.app.data.Transaction;
 import com.swym.app.data.TransactionDataSource;
@@ -56,10 +57,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Crashlytics.start(this);
         setContentView(R.layout.activity_main);
         datasource = new TransactionDataSource(getApplicationContext());
         datasource.open();
-
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -129,7 +130,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
                 SharedPreferences.Editor edit = myPrefs.edit();
                 if(resultCode == Activity.RESULT_OK){
-                    BudgetFragment bf = (BudgetFragment) getSupportFragmentManager().findFragmentById(R.id.budgetFragment);
                     this.budgetVal = intent.getExtras().getDouble("Budget");
                     double updatedBudget = budgetVal;
                     for(Transaction d: transactions){
@@ -174,7 +174,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 case POSITION_BUDGET:
                     return BudgetFragment.newInstance();
                 case POSITION_LOG:
-                    return PlaceholderFragment.newInstance(position + 1);
+                    return LogFragment.newInstance();
                 case POSITION_DATA:
                     return PlaceholderFragment.newInstance(position + 1);
                 default:
@@ -185,7 +185,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 2;
         }
 
         @Override

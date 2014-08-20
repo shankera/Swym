@@ -28,10 +28,10 @@ public class BudgetFragment extends Fragment {
     private final int purchaseRequestCode = 309;
     private final int fundsRequestCode = 515;
     private final int budgetRequestCode = 801;
+    private final double nomoney = 0.00;
     private List<Transaction> transactions;
     private View v;
     private double budgetVal;
-    private double fundsVal;
     private TextView bs;
     private TextView fs;
     private SharedPreferences myPrefs;
@@ -60,6 +60,7 @@ public class BudgetFragment extends Fragment {
             public void onClick(View view) {
                 Intent addFunds = new Intent(getActivity(), AddFunds.class);
                 startActivityForResult(addFunds,fundsRequestCode);
+
             }
         });
 
@@ -68,7 +69,6 @@ public class BudgetFragment extends Fragment {
         datasource.open();
 
         budgetVal = myPrefs.getFloat("Budget", 0.00f);
-        fundsVal = myPrefs.getFloat("Fund", 0.00f);
 
         firstTimeRun = myPrefs.getBoolean("FirstTime", true);
 
@@ -82,6 +82,7 @@ public class BudgetFragment extends Fragment {
         }
 
         //copies all transactions from the datasource
+
         transactions = datasource.getAllTransactions();
         v = view;
 
@@ -93,7 +94,7 @@ public class BudgetFragment extends Fragment {
 
         if(transactions != null) {
             updateTextView(fmt);
-            fs.setText(fmt.format(fundsVal));
+            fs.setText(fmt.format(nomoney));
         }
         return v;
     }
@@ -112,41 +113,16 @@ public class BudgetFragment extends Fragment {
                 if(resultCode == Activity.RESULT_OK){
                     Purchase p = (Purchase) intent.getExtras().getSerializable("Purchase");
                     transactions.add(p);
-                    datasource.createTransaction(p.getName(), p.getCost(), p.getDescription(), "Purchase");
-                    double updatedBudget = budgetVal;
-                    double fundsBudget = 0.00;
-                    for(Transaction d: transactions){
-                        if(d instanceof Purchase) {
-                            updatedBudget = updatedBudget - d.getCost();
-                            fundsBudget -= d.getCost();
-                        }
-                        else{
-                            fundsBudget += d.getCost();
-                        }
-                    }
-                    if(updatedBudget < (.25*budgetVal)){
-                        bs.setTextColor(Color.YELLOW);
-                    }
-                    else if(updatedBudget<=0){
-                        Log.e("sadfasdf", updatedBudget+"");
-                        bs.setTextColor(Color.RED);
-                    }
-                    else{
-                        bs.setTextColor(Color.GREEN);
-                    }
-                    String str = fmt.format(updatedBudget);
-                    bs.setText(str);
-
-                    edit.putFloat("Fund", Float.parseFloat(String.valueOf(fundsBudget)));
+                    datasource.createTransaction(p.getName(), p.getCost(), p.getDescription(), p.getDate(),"Purchase", p.getRealDate());
+                    updateTextView(NumberFormat.getCurrencyInstance());
                     edit.commit();
-                    fs.setText(fmt.format(fundsBudget));
                 }
                 break;
             case(fundsRequestCode):
                 if(resultCode == Activity.RESULT_OK){
                     Fund f = (Fund) intent.getExtras().getSerializable("Fund");
                     transactions.add(f);
-                    datasource.createTransaction(f.getName(), f.getCost(), f.getDescription(), "Fund");
+                    datasource.createTransaction(f.getName(), f.getCost(), f.getDescription(), f.getDate(), "Fund", f.getRealDate());
                     double fundsBudget = 0.00;
                     for(Transaction d: transactions){
                         if(d instanceof Purchase) {
@@ -180,23 +156,28 @@ public class BudgetFragment extends Fragment {
     //calculates any expenditures and deducts from the budget then updates the textview
     private void updateTextView(NumberFormat fmt){
         double updatedBudget = budgetVal;
+        double fundsBudget = 0.00;
+        transactions = datasource.getAllTransactions();
         for(Transaction d: transactions) {
-            if (d instanceof Purchase) {
+            if(d instanceof Purchase) {
                 updatedBudget = updatedBudget - d.getCost();
+                fundsBudget -= d.getCost();
+            }
+            else{
+                fundsBudget += d.getCost();
             }
         }
 
         if(updatedBudget<=0.00){
-            Log.e("sadfasdf", updatedBudget+"");
             bs.setTextColor(Color.RED);
         }else if(updatedBudget < (.25*budgetVal)){
-            Log.e("sadfasdf", updatedBudget+"");
             bs.setTextColor(Color.YELLOW);
         }
         else{
             bs.setTextColor(Color.GREEN);
         }
         bs.setText(fmt.format(updatedBudget));
+        fs.setText(fmt.format(fundsBudget));
 
     }
 

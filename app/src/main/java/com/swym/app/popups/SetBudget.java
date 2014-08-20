@@ -8,19 +8,29 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.swym.app.data.Purchase;
 import com.swym.app.R;
+
+import java.text.NumberFormat;
 
 /**
  * Created by Arjun on 8/12/2014.
  */
 public class SetBudget extends ActionBarActivity {
+    private final double moneySignFormatValue = 0.00;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_budget);
+
+
+        TextView moneySign = (TextView) findViewById(R.id.moneySign);
+        NumberFormat fmt = NumberFormat.getCurrencyInstance();
+        moneySign.setText(fmt.format(moneySignFormatValue).charAt(0)+"");
+
         findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -1,6 +1,6 @@
 package com.swym.app.data;
 
-import com.swym.app.data.Transaction;
+import java.util.Date;
 
 /**
  * Created by Arjun Shanker on 7/19/14.
@@ -11,6 +11,8 @@ public class Purchase implements Transaction {
     private String description;
     private String tag;
     private long id;
+    private int date;
+    private String realDate;
 
     public void setName(String name){
         this.name = name;
@@ -42,7 +44,23 @@ public class Purchase implements Transaction {
         return id;
     }
 
+    @Override
+    public void setDate(int date) {
+        this.date = date;
+    }
+
+    @Override
+    public int getDate() {
+        return date;
+    }
+
     public String getTag(){
         return tag;
+    }
+    public void setRealDate(String realDate){
+        this.realDate = realDate;
+    }
+    public String getRealDate(){
+        return realDate;
     }
 }

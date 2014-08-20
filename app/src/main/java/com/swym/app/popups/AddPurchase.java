@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.swym.app.MainActivity;
@@ -16,13 +18,23 @@ import com.swym.app.R;
 import com.swym.app.data.TransactionDataSource;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class AddPurchase extends ActionBarActivity {
+    private final double moneySignFormatValue = 0.00;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_purchase);
+
+
+        TextView moneySign = (TextView) findViewById(R.id.moneySign);
+        NumberFormat fmt = NumberFormat.getCurrencyInstance();
+        moneySign.setText(fmt.format(moneySignFormatValue).charAt(0)+"");
+
         findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,12 +49,21 @@ public class AddPurchase extends ActionBarActivity {
                 EditText purchaseField = (EditText) findViewById(R.id.enterPurchase);
                 EditText costField = (EditText) findViewById(R.id.enterCost);
                 EditText descField = (EditText) findViewById(R.id.enterDescription);
+                DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
                 if(!purchaseField.getText().toString().equals("") && !costField.getText().toString().equals("")){
                     if(!descField.getText().toString().equals("")){
                         p.setDescription(descField.getText().toString());
                     }
                     p.setCost(Double.parseDouble(costField.getText().toString()));
                     p.setName(purchaseField.getText().toString());
+
+                    Date now = new Date();
+                    String date = new SimpleDateFormat("yyyymm").format(now);
+                    p.setDate(Integer.parseInt(date));
+                    int day = datePicker.getDayOfMonth();
+                    int month = datePicker.getMonth() + 1;
+                    int year = datePicker.getYear();
+                    p.setRealDate(month + "/" + day+ "/"+year);
                     data.putExtra("Purchase", (Serializable) p);
                     setResult(Activity.RESULT_OK, data);
                     finish();
@@ -52,7 +73,6 @@ public class AddPurchase extends ActionBarActivity {
                 }
             }
         });
-
     }
 
 
