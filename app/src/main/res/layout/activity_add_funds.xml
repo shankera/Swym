@@ -71,7 +71,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Date"
+                android:text="@string/Date"
                 android:id="@+id/textView1" />
 
             <DatePicker
@@ -83,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Description"
+                android:text="@string/Description"
                 android:id="@+id/textView3" />
 
             <EditText

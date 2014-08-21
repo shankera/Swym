@@ -68,7 +68,7 @@ public class AddPurchase extends ActionBarActivity {
                     setResult(Activity.RESULT_OK, data);
                     finish();
                 }else{
-                    Toast t = Toast.makeText(getApplication(), "Purchase and Cost cannot be empty", Toast.LENGTH_SHORT);
+                    Toast t = Toast.makeText(getApplication(), getString(R.string.purchase_toast), Toast.LENGTH_SHORT);
                     t.show();
                 }
             }

@@ -39,13 +39,13 @@ public class ViewTransaction extends ActionBarActivity {
         TextView desc = (TextView) findViewById(R.id.viewDescription);
         TextView realDate = (TextView) findViewById(R.id.viewRealDate);
         if(t instanceof Purchase) {
-            type.setText("Purchase");
+            type.setText(getString(R.string.Purchase));
         }else{
-            type.setText("Income");
+            type.setText(getString(R.string.Income));
         }
         name.setText(t.getName());
         NumberFormat fmt = NumberFormat.getCurrencyInstance();
-        valType.setText("Amount");
+        valType.setText(getString(R.string.Cost));
         value.setText(fmt.format(t.getCost()));
         desc.setText(t.getDescription());
         realDate.setText(t.getRealDate());
@@ -60,7 +60,7 @@ public class ViewTransaction extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(ViewTransaction.this);
-                alertDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                alertDialog.setPositiveButton(getString(R.string.saveButtonText), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -71,9 +71,9 @@ public class ViewTransaction extends ActionBarActivity {
                         finish();
                     }
                 });
-                alertDialog.setNegativeButton("No",null);
-                alertDialog.setMessage("Are you sure you want to delete this transaction?");
-                alertDialog.setTitle("Confirm Deletion");
+                alertDialog.setNegativeButton(getString(R.string.cancelButtonText),null);
+                alertDialog.setMessage(getString(R.string.delete_prompt));
+                alertDialog.setTitle(getString(R.string.delete_confirm));
                 alertDialog.show();
             }
         });

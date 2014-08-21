@@ -21,7 +21,7 @@ tools:ignore="MergeRootFrame" >
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Remaining Budget"
+                android:text="@string/remaining_budget"
                 android:gravity="center"
                 android:id="@+id/budgetlabel"
                 android:layout_weight="0.1"
@@ -39,7 +39,7 @@ tools:ignore="MergeRootFrame" >
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Current Balance"
+                android:text="@string/current_balance"
                 android:gravity="center"
                 android:id="@+id/balancelabel"
                 android:layout_weight="0.1"
@@ -64,7 +64,7 @@ tools:ignore="MergeRootFrame" >
                 <Button
                     android:layout_width="fill_parent"
                     android:layout_height="match_parent"
-                    android:text="Add Purchase"
+                    android:text="@string/title_activity_add_purchase"
                     android:id="@+id/addPurchase"
                     android:layout_weight=".5"
                     android:clickable="true"/>
@@ -72,7 +72,7 @@ tools:ignore="MergeRootFrame" >
                 <Button
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:text="Add Funds"
+                    android:text="@string/title_activity_add_funds"
                     android:id="@+id/addFunds"
                     android:layout_weight=".5"
                     android:clickable="true" />

@@ -67,7 +67,7 @@ public class AddFunds extends ActionBarActivity {
                     setResult(Activity.RESULT_OK, data);
                     finish();
                 }else{
-                    Toast t = Toast.makeText(getApplication(), "Income and Cost cannot be empty", Toast.LENGTH_SHORT);
+                    Toast t = Toast.makeText(getApplication(), getString(R.string.funds_toast), Toast.LENGTH_SHORT);
                     t.show();
                 }
             }
