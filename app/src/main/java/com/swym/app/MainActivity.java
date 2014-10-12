@@ -1,5 +1,8 @@
 package com.swym.app;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,11 +16,25 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
+import com.swym.app.data.Purchase;
+import com.swym.app.data.Transaction;
+import com.swym.app.data.TransactionDataSource;
+import com.swym.app.popups.SetBudget;
+
+import java.text.NumberFormat;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
     private int state = 1;
+    private final int budgetRequestCode = 801;
+    private SharedPreferences myPrefs;
+    private double budgetVal;
+    private List<Transaction> transactions;
+    private TextView bs;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -28,16 +45,22 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
      */
     SectionsPagerAdapter mSectionsPagerAdapter;
 
+    private static TransactionDataSource datasource;
     /**
      * The {@link android.support.v4.view.ViewPager} that will host the section contents.
      */
     ViewPager mViewPager;
 
+    public MainActivity() {
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Crashlytics.start(this);
         setContentView(R.layout.activity_main);
-
+        datasource = new TransactionDataSource(getApplicationContext());
+        datasource.open();
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -86,11 +109,41 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
+
+            myPrefs = getApplicationContext().getSharedPreferences("com.swym.app", Activity.MODE_PRIVATE);
+            SharedPreferences.Editor edit = myPrefs.edit();
+            edit.putBoolean("FirstTime", false);
+
+            transactions = datasource.getAllTransactions();
+            edit.commit();
+            Intent setBudget = new Intent(getApplicationContext(), SetBudget.class);
+            startActivityForResult(setBudget,budgetRequestCode);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+    public void onActivityResult(int requestCode, int resultCode, Intent intent){
+        super.onActivityResult(requestCode, resultCode, intent);
 
+        switch(requestCode){
+            case(budgetRequestCode):
+
+                SharedPreferences.Editor edit = myPrefs.edit();
+                if(resultCode == Activity.RESULT_OK){
+                    this.budgetVal = intent.getExtras().getDouble("Budget");
+                    double updatedBudget = budgetVal;
+                    for(Transaction d: transactions){
+                        if(d instanceof Purchase) {
+                            updatedBudget = updatedBudget - d.getCost();
+                        }
+
+                    }
+                    edit.putFloat("Budget", Float.parseFloat(String.valueOf(budgetVal)));
+                    edit.commit();
+                    break;
+                }
+        }
+    }
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         mViewPager.setCurrentItem(tab.getPosition());
@@ -121,7 +174,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                 case POSITION_BUDGET:
                     return BudgetFragment.newInstance();
                 case POSITION_LOG:
-                    return PlaceholderFragment.newInstance(position + 1);
+                    return LogFragment.newInstance();
                 case POSITION_DATA:
                     return PlaceholderFragment.newInstance(position + 1);
                 default:
@@ -132,7 +185,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return 2;
         }
 
         @Override
@@ -177,4 +230,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         }
     }
 
+    public void onResume(){
+        datasource.open();
+        super.onResume();
+    }
+    public void onPause(){
+        super.onPause();
+    }
+    public static TransactionDataSource getDatasource(){
+        return datasource;
+    }
 }

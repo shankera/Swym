@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+      Created by Arjun on 8/20/2014.
+      With help from 김지수
+    -->
+    <string name="app_name">스윔</string>
+    <string name="action_settings">설정</string>
+    <string name="cancelButtonText">취소</string>
+    <string name="closeButtonText">종료</string>
+    <string name="saveButtonText">저장</string>
+    <string name="deleteButtonText">삭제</string>
+    <string name="Purchase">구입</string>
+    <string name="Income">수입</string>
+    <string name="PurchaseHint">불거기, 맥주</string>
+    <string name="IncomeHint">급료 </string>
+    <string name="Cost">총액</string>
+    <string name="Date">날짜</string>
+    <string name="DollarSign">$</string>
+    <string name="CostHint">2000</string>
+    <string name="FundHint">900000</string>
+    <string name="Tag">Tag</string>
+    <string name="Description">설명</string>
+    <string name="DescriptionHint">4개 병들</string>
+    <string name="FundDescriptionHint">초과 근무 외 수당</string>
+    <string name="title_section1">예산</string>
+    <string name="title_section2">거래</string>
+    <string name="title_section3">데이터</string>
+    <string name="title_activity_add_purchase">구입 내역 추가</string>
+    <string name="title_activity_add_funds">수입 내역 추가</string>
+    <string name="title_activity_set_budget">예산 조정</string>
+    <string name="budgExpl">매월의 예산을 입력하세요</string>
+    <string name="title_activity_view_transaction">거래</string>
+    <string name="funds_toast">수입과 충액 비어 있는 못해요</string>
+    <string name="purchase_toast">구입과 충액 비어 있는 못해요</string>
+    <string name="remaining_budget">남아 있는 예산</string>
+    <string name="current_balance">현재의 잔고</string>
+    <string name="delete_prompt">거래를 삭제하시겠습니까?</string>
+    <string name="delete_confirm">삭제 사실임을 보여주다</string>
+    <string name="set_budget_info">설정메뉴에서 예산금액을 언제든 수정할 수 있습니다</string>
+</resources>

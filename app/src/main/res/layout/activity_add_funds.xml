@@ -3,7 +3,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.swym.app.AddPurchase"
+    tools:context="com.swym.app.popups.AddPurchase"
     tools:ignore="MergeRootFrame" >
 
     <RelativeLayout
@@ -53,7 +53,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/DollarSign"
-                    android:id="@+id/textView4" />
+                    android:id="@+id/moneySign" />
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -71,20 +71,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/Tag"
-                android:id="@+id/textView5" />
+                android:text="@string/Date"
+                android:id="@+id/textView1" />
 
-            <Spinner
-                android:layout_width="match_parent"
+            <DatePicker
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/tagSpinner"
-                android:spinnerMode="dropdown" />
-
+                android:id="@+id/datePicker"
+                android:calendarViewShown="false"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Description"
+                android:text="@string/Description"
                 android:id="@+id/textView3" />
 
             <EditText

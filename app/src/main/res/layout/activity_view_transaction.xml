@@ -3,7 +3,7 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.swym.app.popups.AddPurchase"
+    tools:context="com.swym.app.popups.ViewTransaction"
     tools:ignore="MergeRootFrame" >
 
     <RelativeLayout
@@ -22,78 +22,67 @@
             android:layout_alignParentTop="true">
 
             <TextView
+                android:paddingTop="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/Purchase"
-                android:id="@+id/textView" />
+                android:text="@string/title_section2"
+                android:id="@+id/viewType" />
 
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/enterPurchase"
-                android:layout_gravity="center_horizontal"
-                android:hint="@string/PurchaseHint"
-                android:editable="true" />
 
             <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/DollarSign"
+                android:id="@+id/viewName" />
+
+            <TextView
+                android:paddingTop="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/Cost"
-                android:id="@+id/textView2" />
+                android:id="@+id/viewValType" />
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="fill_parent"
-                android:layout_height="45dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="@string/DollarSign"
-                    android:id="@+id/moneySign" />
-
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:ems="10"
-                    android:id="@+id/enterCost"
-                    android:paddingTop="@dimen/activity_vertical_margin"
-                    android:hint="@string/CostHint"
-                    android:editable="true"
-                    android:layout_weight="1" />
-            </LinearLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/Date"
-                android:id="@+id/textView1" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/DollarSign"
+                android:id="@+id/viewValue" />
 
-            <DatePicker
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/datePicker"
-                android:calendarViewShown="false"/>
+
             <TextView
+                android:paddingTop="15dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/Description"
                 android:id="@+id/textView3" />
 
-            <EditText
+            <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
-                android:ems="10"
-                android:id="@+id/enterDescription"
-                android:hint="@string/DescriptionHint" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/viewDescription"
+                android:text="$" />
 
+            <TextView
+                android:paddingTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/Date"
+                android:id="@+id/textView4" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/viewRealDate"
+                android:text="$" />
 
 
         </LinearLayout>
@@ -112,15 +101,15 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:text="@string/cancelButtonText"
-                android:id="@+id/cancelButton"
+                android:id="@+id/closeButton"
                 android:layout_gravity="bottom"
                 android:layout_weight=".5"/>
 
             <Button
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:text="@string/saveButtonText"
-                android:id="@+id/saveButton"
+                android:text="@string/deleteButtonText"
+                android:id="@+id/deleteButton"
                 android:layout_weight=".5" />
         </LinearLayout>
     </RelativeLayout>

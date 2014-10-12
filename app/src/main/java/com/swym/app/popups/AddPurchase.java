@@ -1,26 +1,40 @@
-package com.swym.app;
+package com.swym.app.popups;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.Serializable;
+import com.swym.app.MainActivity;
+import com.swym.app.data.Purchase;
+import com.swym.app.R;
+import com.swym.app.data.TransactionDataSource;
 
-/**
- * Created by Arjun on 8/4/2014.
- */
-public class AddFunds extends ActionBarActivity {
+import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class AddPurchase extends ActionBarActivity {
+    private final double moneySignFormatValue = 0.00;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_funds);
+        setContentView(R.layout.activity_add_purchase);
+
+
+        TextView moneySign = (TextView) findViewById(R.id.moneySign);
+        NumberFormat fmt = NumberFormat.getCurrencyInstance();
+        moneySign.setText(fmt.format(moneySignFormatValue).charAt(0)+"");
+
         findViewById(R.id.cancelButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -31,34 +45,39 @@ public class AddFunds extends ActionBarActivity {
             @Override
             public void onClick(View view) {
                 Intent data = new Intent();
-                Fund f = new Fund();
+                Purchase p = new Purchase();
                 EditText purchaseField = (EditText) findViewById(R.id.enterPurchase);
                 EditText costField = (EditText) findViewById(R.id.enterCost);
                 EditText descField = (EditText) findViewById(R.id.enterDescription);
+                DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
                 if(!purchaseField.getText().toString().equals("") && !costField.getText().toString().equals("")){
                     if(!descField.getText().toString().equals("")){
-                        f.setDescription(descField.getText().toString());
+                        p.setDescription(descField.getText().toString());
                     }
-                    f.setCost(Double.parseDouble(costField.getText().toString()));
-                    f.setName(purchaseField.getText().toString());
-                    data.putExtra("Fund", (Serializable) f);
+                    p.setCost(Double.parseDouble(costField.getText().toString()));
+                    p.setName(purchaseField.getText().toString());
+
+                    Date now = new Date();
+                    String date = new SimpleDateFormat("yyyymm").format(now);
+                    p.setDate(Integer.parseInt(date));
+                    int day = datePicker.getDayOfMonth();
+                    int month = datePicker.getMonth() + 1;
+                    int year = datePicker.getYear();
+                    p.setRealDate(month + "/" + day+ "/"+year);
+                    data.putExtra("Purchase", (Serializable) p);
                     setResult(Activity.RESULT_OK, data);
                     finish();
                 }else{
-                    Toast t = Toast.makeText(getApplication(), "Income and Cost cannot be empty", Toast.LENGTH_SHORT);
+                    Toast t = Toast.makeText(getApplication(), getString(R.string.purchase_toast), Toast.LENGTH_SHORT);
                     t.show();
                 }
             }
         });
-
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.add_purchase, menu);
         return true;
     }
 
