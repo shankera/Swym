@@ -19,6 +19,7 @@ import java.util.List;
 public class TransactionDataSource {
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
+    private Cursor cursor;
     private String[] allColumns = {MySQLiteHelper.COLUMN_ID, MySQLiteHelper.COLUMN_NAME,
             MySQLiteHelper.COLUMN_COST, MySQLiteHelper.COLUMN_DESCRIPTION,
             MySQLiteHelper.COLUMN_TYPE, MySQLiteHelper.COLUMN_DATE, MySQLiteHelper.COLUMN_REAL_DATE};
@@ -28,10 +29,15 @@ public class TransactionDataSource {
     }
 
     public void open() throws SQLiteException{
-        database = dbHelper.getReadableDatabase();
+        if(!database.isOpen()) {
+            database = dbHelper.getReadableDatabase();
+        }
     }
 
     public void close(){
+        if(cursor!= null){
+            cursor.close();
+        }
         dbHelper.close();
     }
 
@@ -44,7 +50,7 @@ public class TransactionDataSource {
         values.put(MySQLiteHelper.COLUMN_DATE, date);
         values.put(MySQLiteHelper.COLUMN_REAL_DATE, realDate);
         long insertId = database.insert(MySQLiteHelper.TABLE_TRANSACTIONS, null, values);
-        Cursor cursor = database.query(MySQLiteHelper.TABLE_TRANSACTIONS, allColumns,
+        cursor = database.query(MySQLiteHelper.TABLE_TRANSACTIONS, allColumns,
                 MySQLiteHelper.COLUMN_ID + " = " + insertId, null, null, null, null);
         cursor.moveToFirst();
         Transaction t = cursorToTransaction(cursor);
