@@ -9,21 +9,18 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.swym.app.R;
 import com.swym.app.data.Purchase;
 import com.swym.app.data.Transaction;
 
-import org.w3c.dom.Text;
-
 import java.text.NumberFormat;
 
 /**
  * Created by Arjun on 8/18/2014.
  */
-public class ViewTransaction extends ActionBarActivity {
+public class ViewTransactionActivity extends ActionBarActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +56,7 @@ public class ViewTransaction extends ActionBarActivity {
         findViewById(R.id.deleteButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(ViewTransaction.this);
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(ViewTransactionActivity.this);
                 alertDialog.setPositiveButton(getString(R.string.saveButtonText), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

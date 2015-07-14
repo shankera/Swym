@@ -23,7 +23,7 @@ android {
     buildToolsVersion "20"
 
     defaultConfig {
-        minSdkVersion 7
+        minSdkVersion 9
 
         // Raise the target to shut up lint more than anything else
         targetSdkVersion 20
@@ -31,6 +31,7 @@ android {
         versionName "1.0.2"
     }
     signingConfigs {
+        //Remember to change these when building the release version
         release {
             storeFile file("thingfile")
             storePassword "thingpass"
@@ -40,7 +41,7 @@ android {
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
             signingConfig signingConfigs.release
         }
@@ -55,4 +56,5 @@ dependencies {
     // Need to add that it caps out at 20. Some devs have the 'L' preview which breaks the build otherwise
     compile 'com.android.support:appcompat-v7:20.+'
     compile 'com.crashlytics.android:crashlytics:1.+'
+    compile 'com.github.satyan:sugar:1.3'
 }

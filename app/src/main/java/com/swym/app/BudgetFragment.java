@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +15,9 @@ import com.swym.app.data.Fund;
 import com.swym.app.data.Purchase;
 import com.swym.app.data.Transaction;
 import com.swym.app.data.TransactionDataSource;
-import com.swym.app.popups.AddFunds;
-import com.swym.app.popups.AddPurchase;
-import com.swym.app.popups.SetBudget;
+import com.swym.app.popups.AddFundsActivity;
+import com.swym.app.popups.AddPurchaseActivity;
+import com.swym.app.popups.SetBudgetActivity;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -49,7 +48,7 @@ public class BudgetFragment extends Fragment {
         view.findViewById(R.id.addPurchase).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addIntent = new Intent(getActivity(), AddPurchase.class);
+                Intent addIntent = new Intent(getActivity(), AddPurchaseActivity.class);
                 startActivityForResult(addIntent, purchaseRequestCode);
             }
         });
@@ -58,7 +57,7 @@ public class BudgetFragment extends Fragment {
         view.findViewById(R.id.addFunds).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent addFunds = new Intent(getActivity(), AddFunds.class);
+                Intent addFunds = new Intent(getActivity(), AddFundsActivity.class);
                 startActivityForResult(addFunds,fundsRequestCode);
 
             }
@@ -77,7 +76,7 @@ public class BudgetFragment extends Fragment {
             SharedPreferences.Editor edit = myPrefs.edit();
             edit.putBoolean("FirstTime", false);
             edit.commit();
-            Intent setBudget = new Intent(getActivity(), SetBudget.class);
+            Intent setBudget = new Intent(getActivity(), SetBudgetActivity.class);
             startActivityForResult(setBudget,budgetRequestCode);
         }
 

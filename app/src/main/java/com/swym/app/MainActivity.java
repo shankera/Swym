@@ -22,9 +22,8 @@ import com.crashlytics.android.Crashlytics;
 import com.swym.app.data.Purchase;
 import com.swym.app.data.Transaction;
 import com.swym.app.data.TransactionDataSource;
-import com.swym.app.popups.SetBudget;
+import com.swym.app.popups.SetBudgetActivity;
 
-import java.text.NumberFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -116,7 +115,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
             transactions = datasource.getAllTransactions();
             edit.commit();
-            Intent setBudget = new Intent(getApplicationContext(), SetBudget.class);
+            Intent setBudget = new Intent(getApplicationContext(), SetBudgetActivity.class);
             startActivityForResult(setBudget,budgetRequestCode);
             return true;
         }
