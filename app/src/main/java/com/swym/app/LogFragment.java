@@ -11,29 +11,20 @@ import com.swym.app.data.Purchase;
 import com.swym.app.data.Transaction;
 import com.swym.app.data.TransactionDataSource;
 import com.swym.app.popups.ViewTransactionActivity;
+import com.swym.app.viewmodels.LogViewModel;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * Created by Arjun on 8/18/2014.
- */
 public class LogFragment extends android.support.v4.app.ListFragment {
-    private TransactionDataSource dataSource;
-    private List<String> values;
+    private LogViewModel viewModel;
     private final int viewCode = 425;
-
-    private List<Transaction> data;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-
-        dataSource = MainActivity.getDatasource();
-        dataSource.open();
-
-        doIt();
+        this.viewModel = new LogViewModel();
     }
 
     public static LogFragment newInstance() {
@@ -42,36 +33,20 @@ public class LogFragment extends android.support.v4.app.ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
         Intent viewIntent = new Intent(getActivity(), ViewTransactionActivity.class);
-        int indexes = data.size()-1;
-
-        viewIntent.putExtra("Transaction", data.get(indexes - position));
+        viewIntent.putExtra("Transaction", viewModel.vms.get(viewModel.vms.size()-1-position));
         startActivityForResult(viewIntent, viewCode);
-
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
         super.onActivityResult(requestCode, resultCode, intent);
         if(resultCode == Activity.RESULT_OK) {
-            dataSource.deleteTransaction((Transaction) intent.getSerializableExtra("Delete"));
+            viewModel.deleteTransaction((Transaction) intent.getSerializableExtra("Delete"));
         }
     }
     public void onResume(){
         super.onResume();
-        doIt();
-    }
-    private void doIt(){
-        data = dataSource.getAllTransactions();
-        values = new ArrayList<String>();
-        NumberFormat fmt = NumberFormat.getCurrencyInstance();
-        for(Transaction d : data){
-            if(d instanceof Purchase)
-                values.add("-"+fmt.format(d.getCost()) + " - " + d.getName());
-            else
-                values.add("+"+fmt.format(d.getCost()) + " - " + d.getName());
-        }
-        Collections.reverse(values);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, values);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, viewModel.vms);
         setListAdapter(adapter);
     }
 }

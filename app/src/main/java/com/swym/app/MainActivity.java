@@ -16,24 +16,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
-import com.swym.app.data.Purchase;
-import com.swym.app.data.Transaction;
-import com.swym.app.data.TransactionDataSource;
 import com.swym.app.popups.SetBudgetActivity;
+import com.swym.app.viewmodels.MainViewModel;
 
-import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
-    private int state = 1;
     private final int budgetRequestCode = 801;
     private SharedPreferences myPrefs;
-    private double budgetVal;
-    private List<Transaction> transactions;
-    private TextView bs;
+    private MainViewModel viewModel;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -43,8 +35,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
      * {@link android.support.v4.app.FragmentStatePagerAdapter}.
      */
     SectionsPagerAdapter mSectionsPagerAdapter;
-
-    private static TransactionDataSource datasource;
     /**
      * The {@link android.support.v4.view.ViewPager} that will host the section contents.
      */
@@ -56,10 +46,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Crashlytics.start(this);
         setContentView(R.layout.activity_main);
-        datasource = new TransactionDataSource(getApplicationContext());
-        datasource.open();
+        viewModel = new MainViewModel(getApplicationContext());
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -113,8 +101,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             SharedPreferences.Editor edit = myPrefs.edit();
             edit.putBoolean("FirstTime", false);
 
-            transactions = datasource.getAllTransactions();
-            edit.commit();
+            edit.apply();
             Intent setBudget = new Intent(getApplicationContext(), SetBudgetActivity.class);
             startActivityForResult(setBudget,budgetRequestCode);
             return true;
@@ -126,19 +113,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
         switch(requestCode){
             case(budgetRequestCode):
-
                 SharedPreferences.Editor edit = myPrefs.edit();
                 if(resultCode == Activity.RESULT_OK){
-                    this.budgetVal = intent.getExtras().getDouble("Budget");
-                    double updatedBudget = budgetVal;
-                    for(Transaction d: transactions){
-                        if(d instanceof Purchase) {
-                            updatedBudget = updatedBudget - d.getCost();
-                        }
-
-                    }
-                    edit.putFloat("Budget", Float.parseFloat(String.valueOf(budgetVal)));
-                    edit.commit();
+                    edit.putFloat("Budget",
+                            this.viewModel.updateBudget(intent.getExtras().getDouble("Budget")));
+                    edit.apply();
                     break;
                 }
         }
@@ -183,7 +162,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
+            //TODO Show 3 total pages.
             return 2;
         }
 
@@ -192,13 +171,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             Locale l = Locale.getDefault();
             switch (position) {
                 case POSITION_BUDGET:
-                    state = 1;
                     return getString(R.string.title_section1).toUpperCase(l);
                 case POSITION_LOG:
-                    state = 2;
                     return getString(R.string.title_section2).toUpperCase(l);
                 case POSITION_DATA:
-                    state = 3;
                     return getString(R.string.title_section3).toUpperCase(l);
             }
             return null;
@@ -230,13 +206,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     }
 
     public void onResume(){
-        datasource.open();
         super.onResume();
     }
     public void onPause(){
         super.onPause();
-    }
-    public static TransactionDataSource getDatasource(){
-        return datasource;
     }
 }

@@ -50,8 +50,9 @@ public class AddFundsActivity extends ActionBarActivity {
                 EditText costField = (EditText) findViewById(R.id.enterCost);
                 DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
                 EditText descField = (EditText) findViewById(R.id.enterDescription);
-                if(!purchaseField.getText().toString().equals("") && !costField.getText().toString().equals("")){
-                    if(!descField.getText().toString().equals("")){
+
+                if(!purchaseField.getText().toString().isEmpty() && !costField.getText().toString().isEmpty()){
+                    if(!descField.getText().toString().isEmpty()){
                         f.setDescription(descField.getText().toString());
                     }
                     f.setCost(Double.parseDouble(costField.getText().toString()));
