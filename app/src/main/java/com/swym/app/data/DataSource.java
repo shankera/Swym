@@ -19,6 +19,9 @@ public class DataSource {
         dataSource.open();
 
     }
+    public void createTransaction(String name, double cost, String desc, int date, String type, String realDate){
+        dataSource.createTransaction(name, cost, desc, date, type, realDate);
+    }
     public void deleteTransaction(Transaction t){
         dataSource.deleteTransaction(t);
     }

@@ -77,7 +77,7 @@ public class BudgetFragment extends Fragment {
 
         double updatedBudget = budgetVal;
 
-        if(transactions != null) {
+            if(transactions != null) {
             updateTextView(fmt);
             fs.setText(fmt.format(nomoney));
         }
@@ -93,27 +93,15 @@ public class BudgetFragment extends Fragment {
         switch(requestCode){
             case(purchaseRequestCode):
                 if(resultCode == Activity.RESULT_OK){
-                    Purchase p = (Purchase) intent.getExtras().getSerializable("Purchase");
-                    transactions.add(p);
-                    datasource.createTransaction(p.getName(), p.getCost(), p.getDescription(), p.getDate(),"Purchase", p.getRealDate());
+                    viewModel.addPurchase((Purchase) intent.getExtras().getSerializable("Purchase"));
                     updateTextView(NumberFormat.getCurrencyInstance());
                     edit.commit();
                 }
                 break;
             case(fundsRequestCode):
                 if(resultCode == Activity.RESULT_OK){
-                    Fund f = (Fund) intent.getExtras().getSerializable("Fund");
-                    transactions.add(f);
-                    datasource.createTransaction(f.getName(), f.getCost(), f.getDescription(), f.getDate(), "Fund", f.getRealDate());
-                    double fundsBudget = 0.00;
-                    for(Transaction d: transactions){
-                        if(d instanceof Purchase) {
-                            fundsBudget -= d.getCost();
-                        }
-                        else{
-                            fundsBudget += d.getCost();
-                        }
-                    }
+                    viewModel.addFund((Fund) intent.getExtras().getSerializable("Fund"));
+                    double fundsBudget = viewModel.getFunds();
                     edit.putFloat("Fund", Float.parseFloat(String.valueOf(fundsBudget)));
                     edit.commit();
                     fs.setText(fmt.format(fundsBudget));

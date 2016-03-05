@@ -55,5 +55,49 @@ public class BudgetViewModel {
             budgetColor = Color.GREEN;
         }
     }
+    public void addPurchase(Purchase purchase) {
+        transactions.add(purchase);
+        dataSource.createTransaction(purchase.getName(), purchase.getCost(), purchase.getDescription(), purchase.getDate(),"Purchase", purchase.getRealDate());
+    }
+    public void addFund(Fund fund) {
+        transactions.add(fund);
+        dataSource.createTransaction(fund.getName(), fund.getCost(), fund.getDescription(), fund.getDate(),"Fund", fund.getRealDate());
+    }
+    //TODO THIS FUCKING SUCKS
+    public double getFunds(){
+        double fundsBudget = 0.00;
+        for(Transaction d: transactions){
+            if(d instanceof Purchase) {
+                fundsBudget -= d.getCost();
+            }
+            else{
+                fundsBudget += d.getCost();
+            }
+        }
+        return fundsBudget;
+    }
+    public void fuckingAwfulFunction(NumberFormat fmt) {
+        transactions = dataSource.getAllTransactions();
+        for(Transaction d: transactions) {
+            if(d instanceof Purchase) {
+                updatedBudget = updatedBudget - d.getCost();
+                fundsBudget -= d.getCost();
+            }
+            else{
+                fundsBudget += d.getCost();
+            }
+        }
 
+        if(updatedBudget<=0.00){
+            bs.setTextColor(Color.RED);
+        }else if(updatedBudget < (.25*budgetVal)){
+            bs.setTextColor(Color.YELLOW);
+        }
+        else{
+            bs.setTextColor(Color.GREEN);
+        }
+        bs.setText(fmt.format(updatedBudget));
+        fs.setText(fmt.format(fundsBudget));
+
+    }
 }
