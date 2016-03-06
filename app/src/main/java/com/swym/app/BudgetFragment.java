@@ -67,19 +67,14 @@ public class BudgetFragment extends Fragment {
             startActivityForResult(setBudget,budgetRequestCode);
         }
 
-        //copies all transactions from the datasource
-
-        transactions = datasource.getAllTransactions();
         v = view;
 
         bs = (TextView) v.findViewById(R.id.budgetshow);
         fs = (TextView) v.findViewById(R.id.balanceshow);
 
-        double updatedBudget = budgetVal;
-
-            if(transactions != null) {
-            updateTextView(fmt);
-            fs.setText(fmt.format(nomoney));
+        if(viewModel.budget == 0.00) {
+            updateTextView(NumberFormat.getCurrencyInstance());
+            fs.setText(NumberFormat.getCurrencyInstance().format(0.00));
         }
         return v;
     }
@@ -109,10 +104,10 @@ public class BudgetFragment extends Fragment {
                 break;
             case(budgetRequestCode):
                 if(resultCode == Activity.RESULT_OK){
-                    this.budgetVal = intent.getExtras().getDouble("Budget");
+                    viewModel.budget = intent.getExtras().getDouble("Budget");
                     updateTextView(fmt);
                 }
-                edit.putFloat("Budget", Float.parseFloat(String.valueOf(budgetVal)));
+                edit.putFloat("Budget", Float.parseFloat(String.valueOf(viewModel.budget)));
                 edit.commit();
                 break;
         }
@@ -125,21 +120,12 @@ public class BudgetFragment extends Fragment {
     }
     //calculates any expenditures and deducts from the budget then updates the textview
     private void updateTextView(NumberFormat fmt){
-        double fundsBudget = 0.00;
-        transactions = datasource.getAllTransactions();
-        for(Transaction d: transactions) {
-            if(d instanceof Purchase) {
-                updatedBudget = updatedBudget - d.getCost();
-                fundsBudget -= d.getCost();
-            }
-            else{
-                fundsBudget += d.getCost();
-            }
-        }
+        double fundsBudget = viewModel.getFunds();
+        double updatedBudget = viewModel.getBudget();
 
         if(updatedBudget<=0.00){
             bs.setTextColor(Color.RED);
-        }else if(updatedBudget < (.25*budgetVal)){
+        }else if(updatedBudget < (.25*viewModel.budget)){
             bs.setTextColor(Color.YELLOW);
         }
         else{

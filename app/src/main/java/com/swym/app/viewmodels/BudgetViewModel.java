@@ -76,28 +76,14 @@ public class BudgetViewModel {
         }
         return fundsBudget;
     }
-    public void fuckingAwfulFunction(NumberFormat fmt) {
+    public double getBudget() {
+        double updatedBudget = budget;
         transactions = dataSource.getAllTransactions();
         for(Transaction d: transactions) {
             if(d instanceof Purchase) {
                 updatedBudget = updatedBudget - d.getCost();
-                fundsBudget -= d.getCost();
-            }
-            else{
-                fundsBudget += d.getCost();
             }
         }
-
-        if(updatedBudget<=0.00){
-            bs.setTextColor(Color.RED);
-        }else if(updatedBudget < (.25*budgetVal)){
-            bs.setTextColor(Color.YELLOW);
-        }
-        else{
-            bs.setTextColor(Color.GREEN);
-        }
-        bs.setText(fmt.format(updatedBudget));
-        fs.setText(fmt.format(fundsBudget));
-
+        return updatedBudget;
     }
 }
