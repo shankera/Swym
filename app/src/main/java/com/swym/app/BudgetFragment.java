@@ -62,7 +62,7 @@ public class BudgetFragment extends Fragment {
             viewModel.firstTimeRun = false;
             SharedPreferences.Editor edit = myPrefs.edit();
             edit.putBoolean("FirstTime", false);
-            edit.commit();
+            edit.apply();
             Intent setBudget = new Intent(getActivity(), SetBudgetActivity.class);
             startActivityForResult(setBudget,budgetRequestCode);
         }
@@ -90,7 +90,7 @@ public class BudgetFragment extends Fragment {
                 if(resultCode == Activity.RESULT_OK){
                     viewModel.addPurchase((Purchase) intent.getExtras().getSerializable("Purchase"));
                     updateTextView(NumberFormat.getCurrencyInstance());
-                    edit.commit();
+                    edit.apply();
                 }
                 break;
             case(fundsRequestCode):
@@ -98,7 +98,7 @@ public class BudgetFragment extends Fragment {
                     viewModel.addFund((Fund) intent.getExtras().getSerializable("Fund"));
                     double fundsBudget = viewModel.getFunds();
                     edit.putFloat("Fund", Float.parseFloat(String.valueOf(fundsBudget)));
-                    edit.commit();
+                    edit.apply();
                     fs.setText(fmt.format(fundsBudget));
                 }
                 break;
@@ -108,7 +108,7 @@ public class BudgetFragment extends Fragment {
                     updateTextView(fmt);
                 }
                 edit.putFloat("Budget", Float.parseFloat(String.valueOf(viewModel.budget)));
-                edit.commit();
+                edit.apply();
                 break;
         }
     }
