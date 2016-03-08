@@ -40,7 +40,9 @@ public class BudgetFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_budget, container, false);
-        viewModel = new BudgetViewModel(myPrefs.getFloat("Budget", 0.00f));
+        viewModel = new BudgetViewModel(myPrefs.getFloat("Budget", 0.00f), myPrefs.getFloat("Balance", 0.00f));
+        myPrefs.edit().putFloat("Budget", (float) viewModel.budget);
+        myPrefs.edit().putFloat("Balance", (float) viewModel.balance);
         //OnClickListener for the add purchase button
         view.findViewById(R.id.addPurchase).setOnClickListener(v -> {
             Intent addIntent = new Intent(getActivity(), AddPurchaseActivity.class);
