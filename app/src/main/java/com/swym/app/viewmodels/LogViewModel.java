@@ -19,7 +19,7 @@ public class LogViewModel {
                 .map(t -> {
                     createViewModel(t);
                     return t;
-                });
+                }).subscribe();
     }
     private void createViewModel(Transaction transaction){
         NumberFormat fmt = NumberFormat.getCurrencyInstance();
