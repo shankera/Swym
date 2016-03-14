@@ -17,14 +17,19 @@ public class BudgetViewModel {
     public double balance = 0.00;
 
     private List<Transaction> transactions;
-    public BudgetViewModel(double budget, double balance){
+    public BudgetViewModel(double budget, double balance, double budgetGoal){
         this.dataSource = DataSource.getInstance();
         this.transactions = dataSource.getAllTransactions();
         hasMoney = this.transactions != null;
-        double newBudget = budget;
-        budgetGoal = budget;
+
         this.budget = budget;
+        this.balance = balance;
+        this.budgetGoal = budgetGoal;
+        if(this.budgetGoal == NO_MONEY) {
+            this.budgetGoal = budget;
+        }
         if(balance == NO_MONEY && hasMoney) {
+            double newBudget = this.budgetGoal;
             for(Transaction transaction: transactions){
                 if(transaction instanceof Purchase){
                     newBudget -= transaction.getCost();
@@ -40,6 +45,7 @@ public class BudgetViewModel {
     public void addPurchase(Purchase purchase) {
         transactions.add(purchase);
         balance -= purchase.getCost();
+        budget -= purchase.getCost();
         dataSource.createTransaction(purchase.getName(), purchase.getCost(), purchase.getDescription(), purchase.getDate(),"Purchase", purchase.getRealDate());
     }
 

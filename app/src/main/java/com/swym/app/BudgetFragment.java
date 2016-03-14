@@ -41,10 +41,12 @@ public class BudgetFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_budget, container, false);
         this.view = view;
         myPrefs = getActivity().getApplicationContext().getSharedPreferences("com.swym.app", Activity.MODE_PRIVATE);
-        viewModel = new BudgetViewModel(myPrefs.getFloat(budgetKey, 0.00f), myPrefs.getFloat("Balance", 0.00f));
+        viewModel = new BudgetViewModel(myPrefs.getFloat(budgetKey, 0.00f),
+                myPrefs.getFloat(balanceKey, 0.00f),
+                myPrefs.getFloat(budgetGoalKey, 0.00f));
         myPrefs.edit().putFloat(budgetKey, (float) viewModel.budget).apply();
         myPrefs.edit().putFloat(balanceKey, (float) viewModel.balance).apply();
-        myPrefs.edit().putFloat(budgetGoalKey, (float) (viewModel.budgetGoal)).apply();
+        myPrefs.edit().putFloat(budgetGoalKey, (float) viewModel.budgetGoal).apply();
 
         //OnClickListener for the add purchase button
         view.findViewById(R.id.addPurchase).setOnClickListener(v -> {
@@ -88,15 +90,15 @@ public class BudgetFragment extends Fragment {
                 if(resultCode == Activity.RESULT_OK){
                     viewModel.addPurchase((Purchase) intent.getExtras().getSerializable("Purchase"));
                     updateTextView(NumberFormat.getCurrencyInstance());
-                    edit.apply();
+                    myPrefs.edit().putFloat(budgetKey, (float) viewModel.budget).apply();
+                    myPrefs.edit().putFloat(balanceKey, (float) viewModel.balance).apply();
                 }
                 break;
             case(fundsRequestCode):
                 if(resultCode == Activity.RESULT_OK){
                     viewModel.addFund((Fund) intent.getExtras().getSerializable("Fund"));
-                    double fundsBudget = viewModel.balance;
-                    edit.putFloat("Fund", Float.parseFloat(String.valueOf(fundsBudget))).apply();
-                    fs.setText(fmt.format(fundsBudget));
+                    myPrefs.edit().putFloat(balanceKey, (float) viewModel.balance).apply();
+                    fs.setText(fmt.format(viewModel.balance));
                 }
                 break;
             case(budgetRequestCode):
@@ -106,7 +108,6 @@ public class BudgetFragment extends Fragment {
                 }
                 edit.putFloat(budgetGoalKey, Float.parseFloat(String.valueOf(viewModel.budgetGoal))).apply();
                 edit.putFloat(budgetKey, Float.parseFloat(String.valueOf(viewModel.budget))).apply();
-                edit.apply();
                 break;
         }
     }
@@ -119,12 +120,9 @@ public class BudgetFragment extends Fragment {
     }
     //calculates any expenditures and deducts from the budget then updates the textview
     private void updateTextView(NumberFormat fmt){
-        double balance = viewModel.balance;
-        double budget = viewModel.budget;
-
-        if(budget<=0.00){
+        if(viewModel.budget<=0.00){
             bs.setTextColor(Color.RED);
-        }else if(budget < (.25 * viewModel.budgetGoal)){
+        }else if(viewModel.budget < (.25 * viewModel.budgetGoal)){
             bs.setTextColor(Color.YELLOW);
         }
         else{
