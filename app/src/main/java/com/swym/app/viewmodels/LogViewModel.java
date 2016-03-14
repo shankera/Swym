@@ -5,23 +5,31 @@ import com.swym.app.data.Purchase;
 import com.swym.app.data.Transaction;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 import rx.Observable;
 
 public class LogViewModel {
     private DataSource dataSource;
     public ArrayList<String> vms;
+    public List<Transaction> transactions;
     public LogViewModel() {
         this.dataSource = DataSource.getInstance();
         vms = new ArrayList<>();
-        dataSource.getAllTransactions();
-        Observable.from(dataSource.getAllTransactions())
+        this.transactions = dataSource.getAllTransactions();
+        Collections.reverse(transactions);
+        Observable.from(this.transactions)
                 .map(t -> {
                     createViewModel(t);
                     return t;
                 }).subscribe();
     }
     private void createViewModel(Transaction transaction){
+        vms.add(viewModelString(transaction));
+    }
+    private String viewModelString(Transaction transaction) {
         NumberFormat fmt = NumberFormat.getCurrencyInstance();
         String outputString;
         if(transaction instanceof Purchase)
@@ -29,9 +37,13 @@ public class LogViewModel {
         else
             outputString = "+";
         outputString+=fmt.format(transaction.getCost()) + " - " + transaction.getName();
-        vms.add(0, outputString);
+        return outputString;
     }
+
     public void deleteTransaction(Transaction transaction) {
+        int index = vms.indexOf(this.viewModelString(transaction));
+        vms.remove(index);
+        transactions.remove(index);
         dataSource.deleteTransaction(transaction);
     }
 }

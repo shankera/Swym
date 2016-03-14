@@ -33,7 +33,7 @@ public class LogFragment extends android.support.v4.app.ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id){
         Intent viewIntent = new Intent(getActivity(), ViewTransactionActivity.class);
-        viewIntent.putExtra("Transaction", viewModel.vms.get(viewModel.vms.size()-1-position));
+        viewIntent.putExtra("Transaction", viewModel.transactions.get(position));
         startActivityForResult(viewIntent, viewCode);
     }
 
@@ -41,7 +41,8 @@ public class LogFragment extends android.support.v4.app.ListFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent intent){
         super.onActivityResult(requestCode, resultCode, intent);
         if(resultCode == Activity.RESULT_OK) {
-            viewModel.deleteTransaction((Transaction) intent.getSerializableExtra("Delete"));
+            Transaction t = (Transaction) intent.getSerializableExtra("Delete");
+            viewModel.deleteTransaction(t);
         }
     }
     public void onResume(){

@@ -7,6 +7,7 @@ import java.util.List;
 public class DataSource {
     private static TransactionDataSource dataSource;
     private static DataSource instance;
+    public double budgetGoal;
     public static DataSource getInstance(Context context) {
         return instance == null ? instance = new DataSource(context) : instance;
     }

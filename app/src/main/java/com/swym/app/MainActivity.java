@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -17,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.swym.app.data.DataSource;
 import com.swym.app.popups.SetBudgetActivity;
 import com.swym.app.viewmodels.MainViewModel;
 
@@ -115,9 +117,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             case(budgetRequestCode):
                 SharedPreferences.Editor edit = myPrefs.edit();
                 if(resultCode == Activity.RESULT_OK){
-                    edit.putFloat("Budget",
-                            this.viewModel.updateBudget(intent.getExtras().getDouble("Budget")));
-                    edit.apply();
+                    edit.putFloat("BudgetGoal", (float) DataSource.getInstance().budgetGoal).apply();
                     break;
                 }
         }

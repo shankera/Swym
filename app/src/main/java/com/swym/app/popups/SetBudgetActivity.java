@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.swym.app.data.DataSource;
 import com.swym.app.data.Purchase;
 import com.swym.app.R;
 
@@ -44,7 +45,7 @@ public class SetBudgetActivity extends ActionBarActivity {
                 Purchase p = new Purchase();
                 EditText budgetField = (EditText) findViewById(R.id.enterBudget);
                 if (!budgetField.getText().toString().equals("")) {
-                    data.putExtra("Budget", Double.parseDouble(budgetField.getText().toString()));
+                    DataSource.getInstance().budgetGoal = Double.parseDouble(budgetField.getText().toString());
                     setResult(Activity.RESULT_OK, data);
                     finish();
                 }

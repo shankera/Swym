@@ -12,34 +12,43 @@ public class BudgetViewModel {
     public boolean firstTimeRun;
     public boolean hasMoney = false;
     private final double NO_MONEY = 0.00;
-    public double budgetGoal = 0.00;
     public double budget = 0.00;
     public double balance = 0.00;
 
     private List<Transaction> transactions;
     public BudgetViewModel(double budget, double balance, double budgetGoal){
         this.dataSource = DataSource.getInstance();
+        this.dataSource.budgetGoal = budgetGoal;
         this.transactions = dataSource.getAllTransactions();
         hasMoney = this.transactions != null;
 
         this.budget = budget;
         this.balance = balance;
-        this.budgetGoal = budgetGoal;
-        if(this.budgetGoal == NO_MONEY) {
-            this.budgetGoal = budget;
+        this.dataSource.budgetGoal = budgetGoal;
+        if(this.dataSource.budgetGoal == NO_MONEY) {
+            this.dataSource.budgetGoal = budget;
         }
         if(balance == NO_MONEY && hasMoney) {
-            double newBudget = this.budgetGoal;
-            for(Transaction transaction: transactions){
-                if(transaction instanceof Purchase){
-                    newBudget -= transaction.getCost();
-                    this.balance -= transaction.getCost();
-                } else if (transaction instanceof Fund){
-                    this.balance += transaction.getCost();
-                }
-            }
-            this.budget = newBudget;
+            updateEverything();
         }
+    }
+    public double getBudgetGoal() {
+        return this.dataSource.budgetGoal;
+    }
+    public void updateEverything(){
+        this.transactions = dataSource.getAllTransactions();
+        double newBudget = this.dataSource.budgetGoal;
+        this.balance = 0.00;
+        for(Transaction transaction: this.transactions){
+            if(transaction instanceof Purchase){
+                newBudget -= transaction.getCost();
+                this.balance -= transaction.getCost();
+            } else if (transaction instanceof Fund){
+                this.balance += transaction.getCost();
+            }
+        }
+        System.out.println(this.dataSource.budgetGoal);
+        this.budget = newBudget;
     }
 
     public void addPurchase(Purchase purchase) {
@@ -56,15 +65,15 @@ public class BudgetViewModel {
     }
 
     public double updateBudget(double budgetGoal) {
-        this.budgetGoal = budgetGoal;
+        this.dataSource.budgetGoal = budgetGoal;
         double updatedBudget = budgetGoal;
-        transactions = dataSource.getAllTransactions();
         for(Transaction d: transactions) {
             if(d instanceof Purchase) {
                 updatedBudget = updatedBudget - d.getCost();
             }
         }
         this.budget = updatedBudget;
+        System.out.println(this.dataSource.budgetGoal);
         return updatedBudget;
     }
 }

@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -38,6 +39,8 @@ public class BudgetFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        super.onCreateView(inflater,container,savedInstanceState);
+        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_budget, container, false);
         this.view = view;
         myPrefs = getActivity().getApplicationContext().getSharedPreferences("com.swym.app", Activity.MODE_PRIVATE);
@@ -46,7 +49,7 @@ public class BudgetFragment extends Fragment {
                 myPrefs.getFloat(budgetGoalKey, 0.00f));
         myPrefs.edit().putFloat(budgetKey, (float) viewModel.budget).apply();
         myPrefs.edit().putFloat(balanceKey, (float) viewModel.balance).apply();
-        myPrefs.edit().putFloat(budgetGoalKey, (float) viewModel.budgetGoal).apply();
+        myPrefs.edit().putFloat(budgetGoalKey, (float) viewModel.getBudgetGoal()).apply();
 
         //OnClickListener for the add purchase button
         view.findViewById(R.id.addPurchase).setOnClickListener(v -> {
@@ -106,7 +109,7 @@ public class BudgetFragment extends Fragment {
                     viewModel.updateBudget(intent.getExtras().getDouble(budgetKey));
                     updateTextView(fmt);
                 }
-                edit.putFloat(budgetGoalKey, Float.parseFloat(String.valueOf(viewModel.budgetGoal))).apply();
+                edit.putFloat(budgetGoalKey, Float.parseFloat(String.valueOf(viewModel.getBudgetGoal()))).apply();
                 edit.putFloat(budgetKey, Float.parseFloat(String.valueOf(viewModel.budget))).apply();
                 break;
         }
@@ -114,20 +117,26 @@ public class BudgetFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        viewModel.budget = myPrefs.getFloat(budgetKey, 0.00f);
-        viewModel.balance = myPrefs.getFloat(balanceKey, 0.00f);
+        System.out.println(this.viewModel.getBudgetGoal());
+        viewModel.updateEverything();
+        myPrefs.edit().putFloat(budgetKey, (float) viewModel.budget).apply();
+        myPrefs.edit().putFloat(balanceKey, (float) viewModel.balance).apply();
+        myPrefs.edit().putFloat(budgetGoalKey, (float) viewModel.getBudgetGoal()).apply();
+        System.out.println(this.viewModel.getBudgetGoal());
         updateTextView(NumberFormat.getCurrencyInstance());
     }
     //calculates any expenditures and deducts from the budget then updates the textview
     private void updateTextView(NumberFormat fmt){
+        System.out.println(this.viewModel.getBudgetGoal());
         if(viewModel.budget<=0.00){
             bs.setTextColor(Color.RED);
-        }else if(viewModel.budget < (.25 * viewModel.budgetGoal)){
+        }else if(viewModel.budget < (.25 * viewModel.getBudgetGoal())){
             bs.setTextColor(Color.YELLOW);
         }
         else{
             bs.setTextColor(Color.GREEN);
         }
+        System.out.println(this.viewModel.getBudgetGoal());
         bs.setText(fmt.format(viewModel.budget));
         fs.setText(fmt.format(viewModel.balance));
     }
