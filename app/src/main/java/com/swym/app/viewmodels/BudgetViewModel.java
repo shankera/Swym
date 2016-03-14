@@ -5,7 +5,6 @@ import com.swym.app.data.Fund;
 import com.swym.app.data.Purchase;
 import com.swym.app.data.Transaction;
 
-import java.text.NumberFormat;
 import java.util.List;
 
 public class BudgetViewModel {
@@ -13,10 +12,9 @@ public class BudgetViewModel {
     public boolean firstTimeRun;
     public boolean hasMoney = false;
     private final double NO_MONEY = 0.00;
+    public double budgetGoal = 0.00;
     public double budget = 0.00;
     public double balance = 0.00;
-
-    public String budgetText;
 
     private List<Transaction> transactions;
     public BudgetViewModel(double budget, double balance){
@@ -24,6 +22,8 @@ public class BudgetViewModel {
         this.transactions = dataSource.getAllTransactions();
         hasMoney = this.transactions != null;
         double newBudget = budget;
+        budgetGoal = budget;
+        this.budget = budget;
         if(balance == NO_MONEY && hasMoney) {
             for(Transaction transaction: transactions){
                 if(transaction instanceof Purchase){
@@ -34,10 +34,6 @@ public class BudgetViewModel {
                 }
             }
             this.budget = newBudget;
-
-        } else {
-            NumberFormat formatter = NumberFormat.getCurrencyInstance();
-            this.budgetText = formatter.format(NO_MONEY);
         }
     }
 
@@ -52,27 +48,17 @@ public class BudgetViewModel {
         balance += fund.getCost();
         dataSource.createTransaction(fund.getName(), fund.getCost(), fund.getDescription(), fund.getDate(),"Fund", fund.getRealDate());
     }
-    //TODO THIS FUCKING SUCKS
-    public double getFunds(){
-        double fundsBudget = 0.00;
-        for(Transaction d: transactions){
-            if(d instanceof Purchase) {
-                fundsBudget -= d.getCost();
-            }
-            else{
-                fundsBudget += d.getCost();
-            }
-        }
-        return fundsBudget;
-    }
-    public double getBudget() {
-        double updatedBudget = budget;
+
+    public double updateBudget(double budgetGoal) {
+        this.budgetGoal = budgetGoal;
+        double updatedBudget = budgetGoal;
         transactions = dataSource.getAllTransactions();
         for(Transaction d: transactions) {
             if(d instanceof Purchase) {
                 updatedBudget = updatedBudget - d.getCost();
             }
         }
+        this.budget = updatedBudget;
         return updatedBudget;
     }
 }

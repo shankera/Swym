@@ -13,26 +13,25 @@ import android.widget.TextView;
 
 import com.swym.app.data.Fund;
 import com.swym.app.data.Purchase;
-import com.swym.app.data.Transaction;
-import com.swym.app.data.TransactionDataSource;
 import com.swym.app.popups.AddFundsActivity;
 import com.swym.app.popups.AddPurchaseActivity;
 import com.swym.app.popups.SetBudgetActivity;
 import com.swym.app.viewmodels.BudgetViewModel;
 
 import java.text.NumberFormat;
-import java.util.List;
 
 public class BudgetFragment extends Fragment {
     private final int purchaseRequestCode = 309;
     private final int fundsRequestCode = 515;
     private final int budgetRequestCode = 801;
-
-    private View v;
+    private View view;
     private TextView bs;
     private TextView fs;
     private SharedPreferences myPrefs;
     private BudgetViewModel viewModel;
+    private final String budgetKey = "Budget";
+    private final String budgetGoalKey = "BudgetGoal";
+    private final String balanceKey = "Balance";
     public static BudgetFragment newInstance() {
         return new BudgetFragment();
     }
@@ -40,9 +39,13 @@ public class BudgetFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_budget, container, false);
-        viewModel = new BudgetViewModel(myPrefs.getFloat("Budget", 0.00f), myPrefs.getFloat("Balance", 0.00f));
-        myPrefs.edit().putFloat("Budget", (float) viewModel.budget);
-        myPrefs.edit().putFloat("Balance", (float) viewModel.balance);
+        this.view = view;
+        myPrefs = getActivity().getApplicationContext().getSharedPreferences("com.swym.app", Activity.MODE_PRIVATE);
+        viewModel = new BudgetViewModel(myPrefs.getFloat(budgetKey, 0.00f), myPrefs.getFloat("Balance", 0.00f));
+        myPrefs.edit().putFloat(budgetKey, (float) viewModel.budget).apply();
+        myPrefs.edit().putFloat(balanceKey, (float) viewModel.balance).apply();
+        myPrefs.edit().putFloat(budgetGoalKey, (float) (viewModel.budgetGoal)).apply();
+
         //OnClickListener for the add purchase button
         view.findViewById(R.id.addPurchase).setOnClickListener(v -> {
             Intent addIntent = new Intent(getActivity(), AddPurchaseActivity.class);
@@ -56,8 +59,6 @@ public class BudgetFragment extends Fragment {
 
         });
 
-        myPrefs = getActivity().getApplicationContext().getSharedPreferences("com.swym.app", Activity.MODE_PRIVATE);
-
         viewModel.firstTimeRun = myPrefs.getBoolean("FirstTime", true);
 
         if(viewModel.firstTimeRun){
@@ -69,16 +70,11 @@ public class BudgetFragment extends Fragment {
             startActivityForResult(setBudget,budgetRequestCode);
         }
 
-        v = view;
+        bs = (TextView) view.findViewById(R.id.budgetshow);
+        fs = (TextView) view.findViewById(R.id.balanceshow);
 
-        bs = (TextView) v.findViewById(R.id.budgetshow);
-        fs = (TextView) v.findViewById(R.id.balanceshow);
-
-        if(viewModel.budget == 0.00) {
-            updateTextView(NumberFormat.getCurrencyInstance());
-            fs.setText(NumberFormat.getCurrencyInstance().format(0.00));
-        }
-        return v;
+        updateTextView(NumberFormat.getCurrencyInstance());
+        return view;
     }
 
     @Override
@@ -98,18 +94,18 @@ public class BudgetFragment extends Fragment {
             case(fundsRequestCode):
                 if(resultCode == Activity.RESULT_OK){
                     viewModel.addFund((Fund) intent.getExtras().getSerializable("Fund"));
-                    double fundsBudget = viewModel.getFunds();
-                    edit.putFloat("Fund", Float.parseFloat(String.valueOf(fundsBudget)));
-                    edit.apply();
+                    double fundsBudget = viewModel.balance;
+                    edit.putFloat("Fund", Float.parseFloat(String.valueOf(fundsBudget))).apply();
                     fs.setText(fmt.format(fundsBudget));
                 }
                 break;
             case(budgetRequestCode):
                 if(resultCode == Activity.RESULT_OK){
-                    viewModel.budget = intent.getExtras().getDouble("Budget");
+                    viewModel.updateBudget(intent.getExtras().getDouble(budgetKey));
                     updateTextView(fmt);
                 }
-                edit.putFloat("Budget", Float.parseFloat(String.valueOf(viewModel.budget)));
+                edit.putFloat(budgetGoalKey, Float.parseFloat(String.valueOf(viewModel.budgetGoal))).apply();
+                edit.putFloat(budgetKey, Float.parseFloat(String.valueOf(viewModel.budget))).apply();
                 edit.apply();
                 break;
         }
@@ -117,25 +113,25 @@ public class BudgetFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        viewModel.budget = myPrefs.getFloat("Budget", 0.00f);
+        viewModel.budget = myPrefs.getFloat(budgetKey, 0.00f);
+        viewModel.balance = myPrefs.getFloat(balanceKey, 0.00f);
         updateTextView(NumberFormat.getCurrencyInstance());
     }
     //calculates any expenditures and deducts from the budget then updates the textview
     private void updateTextView(NumberFormat fmt){
-        double fundsBudget = viewModel.getFunds();
-        double updatedBudget = viewModel.getBudget();
+        double balance = viewModel.balance;
+        double budget = viewModel.budget;
 
-        if(updatedBudget<=0.00){
+        if(budget<=0.00){
             bs.setTextColor(Color.RED);
-        }else if(updatedBudget < (.25*viewModel.budget)){
+        }else if(budget < (.25 * viewModel.budgetGoal)){
             bs.setTextColor(Color.YELLOW);
         }
         else{
             bs.setTextColor(Color.GREEN);
         }
-        bs.setText(fmt.format(updatedBudget));
-        fs.setText(fmt.format(fundsBudget));
-
+        bs.setText(fmt.format(viewModel.budget));
+        fs.setText(fmt.format(viewModel.balance));
     }
 
 }
