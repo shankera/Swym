@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -25,7 +24,6 @@ public class BudgetFragment extends Fragment {
     private final int purchaseRequestCode = 309;
     private final int fundsRequestCode = 515;
     private final int budgetRequestCode = 801;
-    private View view;
     private TextView bs;
     private TextView fs;
     private SharedPreferences myPrefs;
@@ -42,7 +40,6 @@ public class BudgetFragment extends Fragment {
         super.onCreateView(inflater,container,savedInstanceState);
         setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_budget, container, false);
-        this.view = view;
         myPrefs = getActivity().getApplicationContext().getSharedPreferences("com.swym.app", Activity.MODE_PRIVATE);
         viewModel = new BudgetViewModel(myPrefs.getFloat(budgetKey, 0.00f),
                 myPrefs.getFloat(balanceKey, 0.00f),

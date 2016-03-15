@@ -5,7 +5,6 @@ import com.swym.app.data.Purchase;
 import com.swym.app.data.Transaction;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 

@@ -2,13 +2,11 @@ package com.swym.app.popups;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.swym.app.R;
@@ -17,10 +15,7 @@ import com.swym.app.data.Transaction;
 
 import java.text.NumberFormat;
 
-/**
- * Created by Arjun on 8/18/2014.
- */
-public class ViewTransactionActivity extends ActionBarActivity {
+public class ViewTransactionActivity extends AppCompatActivity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,32 +42,21 @@ public class ViewTransactionActivity extends ActionBarActivity {
         desc.setText(t.getDescription());
         realDate.setText(t.getRealDate());
 
-        findViewById(R.id.closeButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        findViewById(R.id.deleteButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(ViewTransactionActivity.this);
-                alertDialog.setPositiveButton(getString(R.string.saveButtonText), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+        findViewById(R.id.closeButton).setOnClickListener(v -> finish());
+        findViewById(R.id.deleteButton).setOnClickListener(view -> {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(ViewTransactionActivity.this);
+            alertDialog.setPositiveButton(getString(R.string.deleteButtonText), (dialogInterface, i) -> {
 
-                        Intent data = new Intent();
-                        Intent intent = getIntent();
-                        data.putExtra("Delete", intent.getSerializableExtra("Transaction"));
-                        setResult(Activity.RESULT_OK, data);
-                        finish();
-                    }
-                });
-                alertDialog.setNegativeButton(getString(R.string.cancelButtonText),null);
-                alertDialog.setMessage(getString(R.string.delete_prompt));
-                alertDialog.setTitle(getString(R.string.delete_confirm));
-                alertDialog.show();
-            }
+                Intent data = new Intent();
+                Intent intent1 = getIntent();
+                data.putExtra("Delete", intent1.getSerializableExtra("Transaction"));
+                setResult(Activity.RESULT_OK, data);
+                finish();
+            });
+            alertDialog.setNegativeButton(getString(R.string.cancelButtonText),null);
+            alertDialog.setMessage(getString(R.string.delete_prompt));
+            alertDialog.setTitle(getString(R.string.delete_confirm));
+            alertDialog.show();
         });
 
     }
@@ -88,9 +72,6 @@ public class ViewTransactionActivity extends ActionBarActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+        return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 }

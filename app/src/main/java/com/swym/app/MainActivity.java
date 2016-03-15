@@ -4,14 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,7 +23,7 @@ import com.swym.app.viewmodels.MainViewModel;
 
 import java.util.Locale;
 
-public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
+public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
     private final int budgetRequestCode = 801;
     private SharedPreferences myPrefs;
     private MainViewModel viewModel;
@@ -102,7 +101,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             myPrefs = getApplicationContext().getSharedPreferences("com.swym.app", Activity.MODE_PRIVATE);
             SharedPreferences.Editor edit = myPrefs.edit();
             edit.putBoolean("FirstTime", false);
-
             edit.apply();
             Intent setBudget = new Intent(getApplicationContext(), SetBudgetActivity.class);
             startActivityForResult(setBudget,budgetRequestCode);

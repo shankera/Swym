@@ -7,16 +7,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.swym.app.data.Purchase;
 import com.swym.app.data.Transaction;
-import com.swym.app.data.TransactionDataSource;
 import com.swym.app.popups.ViewTransactionActivity;
 import com.swym.app.viewmodels.LogViewModel;
-
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class LogFragment extends android.support.v4.app.ListFragment {
     private LogViewModel viewModel;
