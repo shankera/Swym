@@ -61,6 +61,11 @@ public class BudgetFragment extends Fragment {
 
         });
 
+        view.findViewById(R.id.budgetshow).setOnClickListener(v -> {
+            Intent setBudget = new Intent(getActivity(), SetBudgetActivity.class);
+            startActivityForResult(setBudget,budgetRequestCode);
+        });
+
         viewModel.firstTimeRun = myPrefs.getBoolean("FirstTime", true);
 
         if(viewModel.firstTimeRun){
@@ -103,7 +108,8 @@ public class BudgetFragment extends Fragment {
                 break;
             case(budgetRequestCode):
                 if(resultCode == Activity.RESULT_OK){
-                    viewModel.updateBudget(intent.getExtras().getDouble(budgetKey));
+                    edit.putFloat(budgetGoalKey, (float) viewModel.getBudgetGoal()).apply();
+                    viewModel.updateBudget(viewModel.getBudgetGoal());
                     updateTextView(fmt);
                 }
                 edit.putFloat(budgetGoalKey, Float.parseFloat(String.valueOf(viewModel.getBudgetGoal()))).apply();
@@ -114,17 +120,14 @@ public class BudgetFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        System.out.println(this.viewModel.getBudgetGoal());
         viewModel.updateEverything();
         myPrefs.edit().putFloat(budgetKey, (float) viewModel.budget).apply();
         myPrefs.edit().putFloat(balanceKey, (float) viewModel.balance).apply();
         myPrefs.edit().putFloat(budgetGoalKey, (float) viewModel.getBudgetGoal()).apply();
-        System.out.println(this.viewModel.getBudgetGoal());
         updateTextView(NumberFormat.getCurrencyInstance());
     }
     //calculates any expenditures and deducts from the budget then updates the textview
     private void updateTextView(NumberFormat fmt){
-        System.out.println(this.viewModel.getBudgetGoal());
         if(viewModel.budget<=0.00){
             bs.setTextColor(Color.RED);
         }else if(viewModel.budget < (.25 * viewModel.getBudgetGoal())){
@@ -133,9 +136,7 @@ public class BudgetFragment extends Fragment {
         else{
             bs.setTextColor(Color.GREEN);
         }
-        System.out.println(this.viewModel.getBudgetGoal());
         bs.setText(fmt.format(viewModel.budget));
         fs.setText(fmt.format(viewModel.balance));
     }
-
 }

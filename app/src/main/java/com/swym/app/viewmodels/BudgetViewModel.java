@@ -47,7 +47,6 @@ public class BudgetViewModel {
                 this.balance += transaction.getCost();
             }
         }
-        System.out.println(this.dataSource.budgetGoal);
         this.budget = newBudget;
     }
 
@@ -73,7 +72,6 @@ public class BudgetViewModel {
             }
         }
         this.budget = updatedBudget;
-        System.out.println(this.dataSource.budgetGoal);
         return updatedBudget;
     }
 }
