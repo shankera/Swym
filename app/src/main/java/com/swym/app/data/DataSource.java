@@ -4,7 +4,7 @@ import android.content.Context;
 
 import java.util.List;
 
-public class DataSource {
+public class DataSource implements IDataSource {
     private static TransactionDataSource dataSource;
     private static DataSource instance;
     public double budgetGoal;
@@ -15,6 +15,12 @@ public class DataSource {
         return instance;
     }
 
+    public double getBudgetGoal() {
+        return budgetGoal;
+    }
+    public void setBudgetGoal(double budgetGoal) {
+        this.budgetGoal = budgetGoal;
+    }
     private DataSource(Context context){
         dataSource = new TransactionDataSource(context);
         dataSource.open();

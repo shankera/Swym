@@ -2,13 +2,14 @@ package com.swym.app.viewmodels;
 
 import com.swym.app.data.DataSource;
 import com.swym.app.data.Fund;
+import com.swym.app.data.IDataSource;
 import com.swym.app.data.Purchase;
 import com.swym.app.data.Transaction;
 
 import java.util.List;
 
 public class BudgetViewModel {
-    private DataSource dataSource;
+    private IDataSource dataSource;
     public boolean firstTimeRun;
     public boolean hasMoney = false;
     private final double NO_MONEY = 0.00;
@@ -16,28 +17,27 @@ public class BudgetViewModel {
     public double balance = 0.00;
 
     private List<Transaction> transactions;
-    public BudgetViewModel(double budget, double balance, double budgetGoal){
-        this.dataSource = DataSource.getInstance();
-        this.dataSource.budgetGoal = budgetGoal;
+    public BudgetViewModel(double budget, double balance, double budgetGoal, IDataSource dataSource){
+        this.dataSource = dataSource;
+        this.dataSource.setBudgetGoal(budgetGoal);
         this.transactions = dataSource.getAllTransactions();
         hasMoney = this.transactions != null;
 
         this.budget = budget;
         this.balance = balance;
-        this.dataSource.budgetGoal = budgetGoal;
-        if(this.dataSource.budgetGoal == NO_MONEY) {
-            this.dataSource.budgetGoal = budget;
+        if(this.dataSource.getBudgetGoal() == NO_MONEY) {
+            this.dataSource.setBudgetGoal(budget);
         }
         if(balance == NO_MONEY && hasMoney) {
             updateEverything();
         }
     }
     public double getBudgetGoal() {
-        return this.dataSource.budgetGoal;
+        return this.dataSource.getBudgetGoal();
     }
     public void updateEverything(){
         this.transactions = dataSource.getAllTransactions();
-        double newBudget = this.dataSource.budgetGoal;
+        double newBudget = this.dataSource.getBudgetGoal();
         this.balance = 0.00;
         for(Transaction transaction: this.transactions){
             if(transaction instanceof Purchase){
@@ -64,7 +64,7 @@ public class BudgetViewModel {
     }
 
     public double updateBudget(double budgetGoal) {
-        this.dataSource.budgetGoal = budgetGoal;
+        this.dataSource.setBudgetGoal(budgetGoal);
         double updatedBudget = budgetGoal;
         for(Transaction d: transactions) {
             if(d instanceof Purchase) {
