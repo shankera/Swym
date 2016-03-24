@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".popups.AddPurchaseActivity"
+            android:name=".popups.AddWithdrawalActivity"
             android:label="@string/title_activity_add_purchase" >
             <intent-filter>
                 <action android:name="com.swym.app.AddPurchase" />
@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".popups.AddFundsActivity"
+            android:name=".popups.AddDepositActivity"
             android:label="@string/title_activity_add_funds" >
             <intent-filter>
                 <action android:name="com.swym.app.AddFunds" />

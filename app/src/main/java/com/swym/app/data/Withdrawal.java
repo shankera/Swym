@@ -1,11 +1,6 @@
 package com.swym.app.data;
 
-import java.util.Date;
-
-/**
- * Created by Arjun Shanker on 7/19/14.
- */
-public class Purchase implements Transaction {
+public class Withdrawal implements Transaction {
     private String name;
     private double cost;
     private String description;
@@ -13,49 +8,53 @@ public class Purchase implements Transaction {
     private long id;
     private int date;
     private String realDate;
+    private TransactionType type;
+
+    public Withdrawal(){}
+    public Withdrawal(String name, double cost, String desc, int date, TransactionType type, String realDate){
+        this.name = name;
+        this.cost = cost;
+        this.description = desc;
+        this.date = date;
+        this.type = type;
+        this.realDate = realDate;
+    }
 
     public void setName(String name){
         this.name = name;
     }
-    public void setCost(double cost){
-        this.cost = cost;
-    }
-    public void setDescription(String description){
-        this.description = description;
-    }
-    public void setTag(String tag){
-        this.tag = tag;
-    }
     public String getName(){
         return name;
+    }
+    public void setCost(double cost){
+        this.cost = cost;
     }
     public double getCost(){
         return cost;
     }
+    public void setDescription(String description){
+        this.description = description;
+    }
     public String getDescription(){
         return description;
     }
-    @Override
+    public void setTag(String tag){
+        this.tag = tag;
+    }
+    public String getTag(){
+        return tag;
+    }
     public void setId(long id) {
         this.id = id;
     }
-    @Override
     public long getId() {
         return id;
     }
-
-    @Override
     public void setDate(int date) {
         this.date = date;
     }
-
-    @Override
     public int getDate() {
         return date;
-    }
-
-    public String getTag(){
-        return tag;
     }
     public void setRealDate(String realDate){
         this.realDate = realDate;
@@ -63,4 +62,5 @@ public class Purchase implements Transaction {
     public String getRealDate(){
         return realDate;
     }
+    public TransactionType getType(){return type;}
 }

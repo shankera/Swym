@@ -1,18 +1,23 @@
 package com.swym.app.data;
 
-import java.util.Date;
-
-/**
- * Created by Arjun on 8/4/2014.
- */
-public class Fund implements Transaction {
+public class Deposit implements Transaction {
     private String name;
     private double cost;
     private String desc;
     private long id;
     private int date;
+    private TransactionType type;
     private String realDate;
 
+    public Deposit(){}
+    public Deposit(String name, double cost, String desc, int date, TransactionType type, String realDate){
+        this.name = name;
+        this.cost = cost;
+        this.desc = desc;
+        this.date = date;
+        this.type = type;
+        this.realDate = realDate;
+    }
     @Override
     public void setName(String name) {
         this.name = name;
@@ -68,4 +73,5 @@ public class Fund implements Transaction {
     public String getRealDate(){
         return realDate;
     }
+    public TransactionType getType(){return type;}
 }

@@ -1,10 +1,10 @@
 package com.swym.app.viewmodels;
 
-import com.swym.app.data.DataSource;
-import com.swym.app.data.Fund;
+import com.swym.app.data.Deposit;
 import com.swym.app.data.IDataSource;
-import com.swym.app.data.Purchase;
 import com.swym.app.data.Transaction;
+import com.swym.app.data.TransactionType;
+import com.swym.app.data.Withdrawal;
 
 import java.util.List;
 
@@ -40,34 +40,34 @@ public class BudgetViewModel {
         double newBudget = this.dataSource.getBudgetGoal();
         this.balance = 0.00;
         for(Transaction transaction: this.transactions){
-            if(transaction instanceof Purchase){
+            if(transaction instanceof Withdrawal){
                 newBudget -= transaction.getCost();
                 this.balance -= transaction.getCost();
-            } else if (transaction instanceof Fund){
+            } else if (transaction instanceof Deposit){
                 this.balance += transaction.getCost();
             }
         }
         this.budget = newBudget;
     }
 
-    public void addPurchase(Purchase purchase) {
-        transactions.add(purchase);
-        balance -= purchase.getCost();
-        budget -= purchase.getCost();
-        dataSource.createTransaction(purchase.getName(), purchase.getCost(), purchase.getDescription(), purchase.getDate(),"Purchase", purchase.getRealDate());
+    public void addWithdrawal(Withdrawal withdrawal) {
+        transactions.add(withdrawal);
+        balance -= withdrawal.getCost();
+        budget -= withdrawal.getCost();
+        dataSource.createTransaction(withdrawal.getName(), withdrawal.getCost(), withdrawal.getDescription(), withdrawal.getDate(), TransactionType.WITHDRAWAL, withdrawal.getRealDate());
     }
 
-    public void addFund(Fund fund) {
-        transactions.add(fund);
-        balance += fund.getCost();
-        dataSource.createTransaction(fund.getName(), fund.getCost(), fund.getDescription(), fund.getDate(),"Fund", fund.getRealDate());
+    public void addDeposit(Deposit deposit) {
+        transactions.add(deposit);
+        balance += deposit.getCost();
+        dataSource.createTransaction(deposit.getName(), deposit.getCost(), deposit.getDescription(), deposit.getDate(),TransactionType.DEPOSIT, deposit.getRealDate());
     }
 
     public double updateBudget(double budgetGoal) {
         this.dataSource.setBudgetGoal(budgetGoal);
         double updatedBudget = budgetGoal;
         for(Transaction d: transactions) {
-            if(d instanceof Purchase) {
+            if(d instanceof Withdrawal) {
                 updatedBudget = updatedBudget - d.getCost();
             }
         }

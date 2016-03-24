@@ -11,18 +11,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.swym.app.data.Fund;
-import com.swym.app.data.Purchase;
-import com.swym.app.popups.AddFundsActivity;
-import com.swym.app.popups.AddPurchaseActivity;
+import com.swym.app.data.DataSource;
+import com.swym.app.data.Deposit;
+import com.swym.app.data.TransactionType;
+import com.swym.app.data.Withdrawal;
+import com.swym.app.popups.AddDepositActivity;
+import com.swym.app.popups.AddWithdrawalActivity;
 import com.swym.app.popups.SetBudgetActivity;
 import com.swym.app.viewmodels.BudgetViewModel;
 
 import java.text.NumberFormat;
 
 public class BudgetFragment extends Fragment {
-    private final int purchaseRequestCode = 309;
-    private final int fundsRequestCode = 515;
+    private final int withdrawalRequestCode = 309;
+    private final int depositRequestCode = 515;
     private final int budgetRequestCode = 801;
     private TextView bs;
     private TextView fs;
@@ -43,21 +45,22 @@ public class BudgetFragment extends Fragment {
         myPrefs = getActivity().getApplicationContext().getSharedPreferences("com.swym.app", Activity.MODE_PRIVATE);
         viewModel = new BudgetViewModel(myPrefs.getFloat(budgetKey, 0.00f),
                 myPrefs.getFloat(balanceKey, 0.00f),
-                myPrefs.getFloat(budgetGoalKey, 0.00f));
+                myPrefs.getFloat(budgetGoalKey, 0.00f),
+                DataSource.getInstance());
         myPrefs.edit().putFloat(budgetKey, (float) viewModel.budget).apply();
         myPrefs.edit().putFloat(balanceKey, (float) viewModel.balance).apply();
         myPrefs.edit().putFloat(budgetGoalKey, (float) viewModel.getBudgetGoal()).apply();
 
         //OnClickListener for the add purchase button
         view.findViewById(R.id.addPurchase).setOnClickListener(v -> {
-            Intent addIntent = new Intent(getActivity(), AddPurchaseActivity.class);
-            startActivityForResult(addIntent, purchaseRequestCode);
+            Intent addWithdrawal = new Intent(getActivity(), AddWithdrawalActivity.class);
+            startActivityForResult(addWithdrawal, withdrawalRequestCode);
         });
 
         //OnClickListener for the add funds button
         view.findViewById(R.id.addFunds).setOnClickListener(v -> {
-            Intent addFunds = new Intent(getActivity(), AddFundsActivity.class);
-            startActivityForResult(addFunds,fundsRequestCode);
+            Intent addDeposit = new Intent(getActivity(), AddDepositActivity.class);
+            startActivityForResult(addDeposit,depositRequestCode);
 
         });
 
@@ -91,17 +94,17 @@ public class BudgetFragment extends Fragment {
 
         SharedPreferences.Editor edit = myPrefs.edit();
         switch(requestCode){
-            case(purchaseRequestCode):
+            case(withdrawalRequestCode):
                 if(resultCode == Activity.RESULT_OK){
-                    viewModel.addPurchase((Purchase) intent.getExtras().getSerializable("Purchase"));
+                    viewModel.addWithdrawal((Withdrawal) intent.getExtras().getSerializable(TransactionType.WITHDRAWAL.toString()));
                     updateTextView(NumberFormat.getCurrencyInstance());
                     myPrefs.edit().putFloat(budgetKey, (float) viewModel.budget).apply();
                     myPrefs.edit().putFloat(balanceKey, (float) viewModel.balance).apply();
                 }
                 break;
-            case(fundsRequestCode):
+            case(depositRequestCode):
                 if(resultCode == Activity.RESULT_OK){
-                    viewModel.addFund((Fund) intent.getExtras().getSerializable("Fund"));
+                    viewModel.addDeposit((Deposit) intent.getExtras().getSerializable(TransactionType.DEPOSIT.toString()));
                     myPrefs.edit().putFloat(balanceKey, (float) viewModel.balance).apply();
                     fs.setText(fmt.format(viewModel.balance));
                 }

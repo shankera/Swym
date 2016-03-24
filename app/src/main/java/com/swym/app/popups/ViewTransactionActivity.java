@@ -10,8 +10,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.swym.app.R;
-import com.swym.app.data.Purchase;
 import com.swym.app.data.Transaction;
+import com.swym.app.data.Withdrawal;
 
 import java.text.NumberFormat;
 
@@ -30,7 +30,7 @@ public class ViewTransactionActivity extends AppCompatActivity {
         TextView value = (TextView) findViewById(R.id.viewValue);
         TextView desc = (TextView) findViewById(R.id.viewDescription);
         TextView realDate = (TextView) findViewById(R.id.viewRealDate);
-        if(t instanceof Purchase) {
+        if(t instanceof Withdrawal) {
             type.setText(getString(R.string.Purchase));
         }else{
             type.setText(getString(R.string.Income));

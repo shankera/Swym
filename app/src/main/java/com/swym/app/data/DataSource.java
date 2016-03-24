@@ -2,6 +2,8 @@ package com.swym.app.data;
 
 import android.content.Context;
 
+import org.apache.commons.lang3.ObjectUtils;
+
 import java.util.List;
 
 public class DataSource implements IDataSource {
@@ -12,6 +14,9 @@ public class DataSource implements IDataSource {
         return instance == null ? instance = new DataSource(context) : instance;
     }
     public static DataSource getInstance() {
+        if (instance == null) {
+            throw new NullPointerException("DataSource has not been initialized");
+        }
         return instance;
     }
 
@@ -26,7 +31,7 @@ public class DataSource implements IDataSource {
         dataSource.open();
 
     }
-    public void createTransaction(String name, double cost, String desc, int date, String type, String realDate){
+    public void createTransaction(String name, double cost, String desc, int date, TransactionType type, String realDate){
         dataSource.createTransaction(name, cost, desc, date, type, realDate);
     }
     public void deleteTransaction(Transaction t){

@@ -1,8 +1,9 @@
 package com.swym.app.viewmodels;
 
 import com.swym.app.data.DataSource;
-import com.swym.app.data.Purchase;
 import com.swym.app.data.Transaction;
+import com.swym.app.data.Withdrawal;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +32,7 @@ public class LogViewModel {
     private String viewModelString(Transaction transaction) {
         NumberFormat fmt = NumberFormat.getCurrencyInstance();
         String outputString;
-        if(transaction instanceof Purchase)
+        if(transaction instanceof Withdrawal)
             outputString = "-";
         else
             outputString = "+";

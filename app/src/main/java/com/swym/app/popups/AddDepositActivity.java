@@ -11,56 +11,53 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.swym.app.data.Purchase;
 import com.swym.app.R;
+import com.swym.app.data.Deposit;
+import com.swym.app.data.TransactionType;
 
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class AddPurchaseActivity extends AppCompatActivity {
-
+public class AddDepositActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_purchase);
-
-
+        setContentView(R.layout.activity_add_funds);
         TextView moneySign = (TextView) findViewById(R.id.moneySign);
         NumberFormat fmt = NumberFormat.getCurrencyInstance();
-        double moneySignFormatValue = 0.00;
-        moneySign.setText(String.format("%s", fmt.format(moneySignFormatValue).charAt(0)));
-
+        moneySign.setText(String.format("%s", fmt.format(0.00).charAt(0)));
         findViewById(R.id.cancelButton).setOnClickListener(v -> finish());
         findViewById(R.id.saveButton).setOnClickListener(view -> {
             Intent data = new Intent();
-            Purchase p = new Purchase();
+            Deposit deposit = new Deposit();
             EditText purchaseField = (EditText) findViewById(R.id.enterPurchase);
             EditText costField = (EditText) findViewById(R.id.enterCost);
-            EditText descField = (EditText) findViewById(R.id.enterDescription);
             DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
-            if(!purchaseField.getText().toString().equals("") && !costField.getText().toString().equals("")){
-                if(!descField.getText().toString().equals("")){
-                    p.setDescription(descField.getText().toString());
-                }
-                p.setCost(Double.parseDouble(costField.getText().toString()));
-                p.setName(purchaseField.getText().toString());
+            EditText descField = (EditText) findViewById(R.id.enterDescription);
 
+            if(!purchaseField.getText().toString().isEmpty() && !costField.getText().toString().isEmpty()){
+                if(!descField.getText().toString().isEmpty()){
+                    deposit.setDescription(descField.getText().toString());
+                }
+                deposit.setCost(Double.parseDouble(costField.getText().toString()));
+                deposit.setName(purchaseField.getText().toString());
                 Date now = new Date();
                 String date = new SimpleDateFormat("yyyymm").format(now);
-                p.setDate(Integer.parseInt(date));
+                deposit.setDate(Integer.parseInt(date));
                 int day = datePicker.getDayOfMonth();
                 int month = datePicker.getMonth() + 1;
                 int year = datePicker.getYear();
-                p.setRealDate(month + "/" + day+ "/"+year);
-                data.putExtra("Purchase", p);
+                deposit.setRealDate(month + "/" + day + "/" + year);
+                data.putExtra(TransactionType.DEPOSIT.toString(), deposit);
                 setResult(Activity.RESULT_OK, data);
                 finish();
             }else{
-                Toast t = Toast.makeText(getApplication(), getString(R.string.purchase_toast), Toast.LENGTH_SHORT);
+                Toast t = Toast.makeText(getApplication(), getString(R.string.funds_toast), Toast.LENGTH_SHORT);
                 t.show();
             }
         });
+
     }
 
 

@@ -13,9 +13,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Arjun on 8/16/2014.
- */
 public class TransactionDataSource {
     private SQLiteDatabase database;
     private MySQLiteHelper dbHelper;
@@ -35,12 +32,12 @@ public class TransactionDataSource {
         dbHelper.close();
     }
 
-    public synchronized Transaction createTransaction(String name, double cost, String desc, int date, String type, String realDate){
+    public synchronized Transaction createTransaction(String name, double cost, String desc, int date, TransactionType type, String realDate){
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.COLUMN_NAME, name);
         values.put(MySQLiteHelper.COLUMN_COST, cost);
         values.put(MySQLiteHelper.COLUMN_DESCRIPTION, desc);
-        values.put(MySQLiteHelper.COLUMN_TYPE, type);
+        values.put(MySQLiteHelper.COLUMN_TYPE, type.toString());
         values.put(MySQLiteHelper.COLUMN_DATE, date);
         values.put(MySQLiteHelper.COLUMN_REAL_DATE, realDate);
         long insertId = database.insert(MySQLiteHelper.TABLE_TRANSACTIONS, null, values);
@@ -58,17 +55,19 @@ public class TransactionDataSource {
     }
     private Transaction cursorToTransaction(Cursor cursor) {
         Transaction t = null;
-        if(cursor.getString(4).equals("Purchase")){
-            t = new Purchase();
-        }else if(cursor.getString(4).equals("Fund")){
-            t = new Fund();
+        if(cursor.getString(4).equals(TransactionType.WITHDRAWAL.toString())){
+            t = new Withdrawal();
+        }else if(cursor.getString(4).equals(TransactionType.DEPOSIT.toString())){
+            t = new Deposit();
         }
-        t.setId(cursor.getLong(0));
-        t.setName(cursor.getString(1));
-        t.setCost(cursor.getDouble(2));
-        t.setDescription(cursor.getString(3));
-        t.setDate(cursor.getInt(5));
-        t.setRealDate(cursor.getString(6));
+        if(t != null) {
+            t.setId(cursor.getLong(0));
+            t.setName(cursor.getString(1));
+            t.setCost(cursor.getDouble(2));
+            t.setDescription(cursor.getString(3));
+            t.setDate(cursor.getInt(5));
+            t.setRealDate(cursor.getString(6));
+        }
         return t;
     }
 

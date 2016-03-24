@@ -5,9 +5,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-/**
- * Created by Arjun on 8/16/2014.
- */
 public class MySQLiteHelper extends SQLiteOpenHelper{
     public static final String TABLE_TRANSACTIONS = "transactions";
     public static final String COLUMN_ID = "_id";
