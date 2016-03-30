@@ -97,11 +97,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == R.id.action_settings) {
-
             myPrefs = getApplicationContext().getSharedPreferences("com.swym.app", Activity.MODE_PRIVATE);
-            SharedPreferences.Editor edit = myPrefs.edit();
-            edit.putBoolean("FirstTime", false);
-            edit.apply();
             Intent setBudget = new Intent(getApplicationContext(), SetBudgetActivity.class);
             startActivityForResult(setBudget,budgetRequestCode);
             return true;

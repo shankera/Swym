@@ -70,17 +70,6 @@ public class BudgetFragment extends Fragment {
             startActivityForResult(setBudget,budgetRequestCode);
         });
 
-        viewModel.firstTimeRun = myPrefs.getBoolean("FirstTime", true);
-
-        if(viewModel.firstTimeRun){
-            viewModel.firstTimeRun = false;
-            SharedPreferences.Editor edit = myPrefs.edit();
-            edit.putBoolean("FirstTime", false);
-            edit.apply();
-            Intent setBudget = new Intent(getActivity(), SetBudgetActivity.class);
-            startActivityForResult(setBudget,budgetRequestCode);
-        }
-
         bs = (TextView) view.findViewById(R.id.budgetshow);
         fs = (TextView) view.findViewById(R.id.balanceshow);
 

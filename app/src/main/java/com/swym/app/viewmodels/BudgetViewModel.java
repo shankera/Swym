@@ -10,7 +10,6 @@ import java.util.List;
 
 public class BudgetViewModel {
     private IDataSource dataSource;
-    public boolean firstTimeRun;
     public boolean hasMoney = false;
     private final double NO_MONEY = 0.00;
     public double budget = 0.00;
