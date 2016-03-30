@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,8 +112,9 @@ public class BudgetFragment extends Fragment {
                 break;
             case(budgetRequestCode):
                 if(resultCode == Activity.RESULT_OK){
+                    double newBudgetGoal = intent.getExtras().getDouble(budgetGoalKey);
+                    viewModel.updateBudget(newBudgetGoal);
                     edit.putFloat(budgetGoalKey, (float) viewModel.getBudgetGoal()).apply();
-                    viewModel.updateBudget(viewModel.getBudgetGoal());
                     updateTextView(fmt);
                 }
                 edit.putFloat(budgetGoalKey, Float.parseFloat(String.valueOf(viewModel.getBudgetGoal()))).apply();
@@ -123,7 +125,7 @@ public class BudgetFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
-        viewModel.updateEverything();
+        viewModel.updateBudget(DataSource.getInstance().budgetGoal);
         myPrefs.edit().putFloat(budgetKey, (float) viewModel.budget).apply();
         myPrefs.edit().putFloat(balanceKey, (float) viewModel.balance).apply();
         myPrefs.edit().putFloat(budgetGoalKey, (float) viewModel.getBudgetGoal()).apply();

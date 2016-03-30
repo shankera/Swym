@@ -1,14 +1,12 @@
 package mocks;
 
-import android.content.Context;
-
 import com.swym.app.data.Deposit;
 import com.swym.app.data.IDataSource;
 import com.swym.app.data.Transaction;
-import com.swym.app.data.TransactionDataSource;
 import com.swym.app.data.TransactionType;
 import com.swym.app.data.Withdrawal;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DataSourceMock implements IDataSource {
@@ -16,6 +14,9 @@ public class DataSourceMock implements IDataSource {
 
     private List<Transaction> dataSource;
 
+    public DataSourceMock(){
+        dataSource = new ArrayList<>();
+    }
     public double getBudgetGoal() {
         return budgetGoal;
     }

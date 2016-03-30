@@ -31,7 +31,7 @@ public class SetBudgetActivity extends AppCompatActivity {
             Intent data = new Intent();
             EditText budgetField = (EditText) findViewById(R.id.enterBudget);
             if (!budgetField.getText().toString().equals("")) {
-                DataSource.getInstance().budgetGoal = Double.parseDouble(budgetField.getText().toString());
+                data.putExtra("BudgetGoal", Double.parseDouble(budgetField.getText().toString()));
                 setResult(Activity.RESULT_OK, data);
                 finish();
             }

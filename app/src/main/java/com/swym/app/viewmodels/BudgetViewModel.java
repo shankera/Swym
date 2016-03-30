@@ -17,6 +17,8 @@ public class BudgetViewModel {
     public double balance = 0.00;
 
     private List<Transaction> transactions;
+
+    //If balance and budget are passed through, do not re-calculate
     public BudgetViewModel(double budget, double balance, double budgetGoal, IDataSource dataSource){
         this.dataSource = dataSource;
         this.dataSource.setBudgetGoal(budgetGoal);
@@ -32,6 +34,7 @@ public class BudgetViewModel {
             updateEverything();
         }
     }
+
     public double getBudgetGoal() {
         return this.dataSource.getBudgetGoal();
     }
@@ -63,15 +66,10 @@ public class BudgetViewModel {
         dataSource.createTransaction(deposit.getName(), deposit.getCost(), deposit.getDescription(), deposit.getDate(),TransactionType.DEPOSIT, deposit.getRealDate());
     }
 
-    public double updateBudget(double budgetGoal) {
-        this.dataSource.setBudgetGoal(budgetGoal);
-        double updatedBudget = budgetGoal;
-        for(Transaction d: transactions) {
-            if(d instanceof Withdrawal) {
-                updatedBudget = updatedBudget - d.getCost();
-            }
-        }
-        this.budget = updatedBudget;
-        return updatedBudget;
+    public double updateBudget(double newBudgetGoal) {
+        double budgetDifference = this.getBudgetGoal() - this.budget;
+        this.dataSource.setBudgetGoal(newBudgetGoal);
+        this.budget = newBudgetGoal - budgetDifference;
+        return this.budget;
     }
 }
