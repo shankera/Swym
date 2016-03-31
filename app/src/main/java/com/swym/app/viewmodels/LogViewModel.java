@@ -17,6 +17,10 @@ public class LogViewModel {
     public List<Transaction> transactions;
     public LogViewModel() {
         this.dataSource = DataSource.getInstance();
+        refreshVms();
+    }
+    public void refreshVms(){
+        this.transactions = dataSource.getAllTransactions();
         vms = new ArrayList<>();
         this.transactions = dataSource.getAllTransactions();
         Collections.reverse(transactions);
@@ -25,6 +29,7 @@ public class LogViewModel {
                     createViewModel(t);
                     return t;
                 }).subscribe();
+
     }
     private void createViewModel(Transaction transaction){
         vms.add(viewModelString(transaction));

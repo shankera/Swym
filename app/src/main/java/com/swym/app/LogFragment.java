@@ -36,10 +36,12 @@ public class LogFragment extends android.support.v4.app.ListFragment {
         if(resultCode == Activity.RESULT_OK) {
             Transaction t = (Transaction) intent.getSerializableExtra("Delete");
             viewModel.deleteTransaction(t);
+//            ((MainActivity)getActivity()).val = 0.0;
         }
     }
     public void onResume(){
         super.onResume();
+        viewModel.refreshVms();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, viewModel.vms);
         setListAdapter(adapter);
     }
