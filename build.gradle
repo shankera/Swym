@@ -6,9 +6,10 @@ buildscript {
             url "http://jcenter.bintray.com/"
         }
         mavenCentral()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.android.tools.build:gradle:3.0.0'
         classpath "com.android.databinding:dataBinder:1.0-rc1"
         classpath 'me.tatarka:gradle-retrolambda:3.2.4'
     }

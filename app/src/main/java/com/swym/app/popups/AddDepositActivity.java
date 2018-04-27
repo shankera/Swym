@@ -24,7 +24,7 @@ public class AddDepositActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_funds);
-        TextView moneySign = (TextView) findViewById(R.id.moneySign);
+        TextView moneySign = findViewById(R.id.moneySign);
         NumberFormat fmt = NumberFormat.getCurrencyInstance();
         moneySign.setText(String.format("%s", fmt.format(0.00).charAt(0)));
         findViewById(R.id.cancelButton).setOnClickListener(v -> finish());
@@ -36,8 +36,8 @@ public class AddDepositActivity extends AppCompatActivity {
             DatePicker datePicker = (DatePicker) findViewById(R.id.datePicker);
             EditText descField = (EditText) findViewById(R.id.enterDescription);
 
-            if(!purchaseField.getText().toString().isEmpty() && !costField.getText().toString().isEmpty()){
-                if(!descField.getText().toString().isEmpty()){
+            if (!purchaseField.getText().toString().isEmpty() && !costField.getText().toString().isEmpty()) {
+                if (!descField.getText().toString().isEmpty()) {
                     deposit.setDescription(descField.getText().toString());
                 }
                 deposit.setCost(Double.parseDouble(costField.getText().toString()));
@@ -52,12 +52,11 @@ public class AddDepositActivity extends AppCompatActivity {
                 data.putExtra(TransactionType.DEPOSIT.toString(), deposit);
                 setResult(Activity.RESULT_OK, data);
                 finish();
-            }else{
+            } else {
                 Toast t = Toast.makeText(getApplication(), getString(R.string.funds_toast), Toast.LENGTH_SHORT);
                 t.show();
             }
         });
-
     }
 
 

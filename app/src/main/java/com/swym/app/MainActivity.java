@@ -27,23 +27,9 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     private final int budgetRequestCode = 801;
     private SharedPreferences myPrefs;
     private MainViewModel viewModel;
-//    public double val;
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    SectionsPagerAdapter mSectionsPagerAdapter;
-    /**
-     * The {@link android.support.v4.view.ViewPager} that will host the section contents.
-     */
-    ViewPager mViewPager;
 
-    public MainActivity() {
-    }
+    SectionsPagerAdapter mSectionsPagerAdapter;
+    ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,23 +86,25 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         if (id == R.id.action_settings) {
             myPrefs = getApplicationContext().getSharedPreferences("com.swym.app", Activity.MODE_PRIVATE);
             Intent setBudget = new Intent(getApplicationContext(), SetBudgetActivity.class);
-            startActivityForResult(setBudget,budgetRequestCode);
+            startActivityForResult(setBudget, budgetRequestCode);
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
-    public void onActivityResult(int requestCode, int resultCode, Intent intent){
+
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
-        switch(requestCode){
-            case(budgetRequestCode):
+        switch (requestCode) {
+            case (budgetRequestCode):
                 SharedPreferences.Editor edit = myPrefs.edit();
-                if(resultCode == Activity.RESULT_OK){
+                if (resultCode == Activity.RESULT_OK) {
                     edit.putFloat("BudgetGoal", (float) DataSource.getInstance().budgetGoal).apply();
                     break;
                 }
         }
     }
+
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         mViewPager.setCurrentItem(tab.getPosition());
@@ -141,8 +129,6 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case POSITION_BUDGET:
                     return BudgetFragment.newInstance();
@@ -200,10 +186,11 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         }
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
     }
-    public void onPause(){
+
+    public void onPause() {
         super.onPause();
     }
 }

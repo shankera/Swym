@@ -14,7 +14,7 @@
     <string name="Cost">Amount</string>
     <string name="Date">Date</string>
     <string name="DollarSign">$</string>
-    <string name="CostHint">23.43</string>
+    <string name="CostHint">200.00</string>
     <string name="FundHint">923.43</string>
     <string name="Tag">Tag</string>
     <string name="Description">Description</string>
@@ -35,4 +35,5 @@
     <string name="delete_prompt">Are you sure you want to delete this transaction?</string>
     <string name="delete_confirm">Confirm Deletion</string>
     <string name="set_budget_info">You can change your budget at any time in the settings menu.</string>
+    <string name="zero_dollars">$0.00</string>
 </resources>

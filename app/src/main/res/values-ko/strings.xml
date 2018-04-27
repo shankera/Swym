@@ -17,7 +17,7 @@
     <string name="Cost">총액</string>
     <string name="Date">날짜</string>
     <string name="DollarSign">$</string>
-    <string name="CostHint">2000</string>
+    <string name="CostHint">200000</string>
     <string name="FundHint">900000</string>
     <string name="Tag">Tag</string>
     <string name="Description">설명</string>
