@@ -1,4 +1,4 @@
-package com.swym.app.popups;
+package com.swym.app.views;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,7 +16,7 @@ import com.swym.app.data.Withdrawal;
 import java.text.NumberFormat;
 
 public class ViewTransactionActivity extends AppCompatActivity {
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,15 +24,15 @@ public class ViewTransactionActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Transaction t = (Transaction) intent.getSerializableExtra("Transaction");
-        TextView type = (TextView) findViewById(R.id.viewType);
-        TextView name = (TextView) findViewById(R.id.viewName);
-        TextView valType = (TextView) findViewById(R.id.viewValType);
-        TextView value = (TextView) findViewById(R.id.viewValue);
-        TextView desc = (TextView) findViewById(R.id.viewDescription);
-        TextView realDate = (TextView) findViewById(R.id.viewRealDate);
-        if(t instanceof Withdrawal) {
+        TextView type = findViewById(R.id.viewType);
+        TextView name = findViewById(R.id.viewName);
+        TextView valType = findViewById(R.id.viewValType);
+        TextView value = findViewById(R.id.viewValue);
+        TextView desc = findViewById(R.id.viewDescription);
+        TextView realDate = findViewById(R.id.viewRealDate);
+        if (t instanceof Withdrawal) {
             type.setText(getString(R.string.Purchase));
-        }else{
+        } else {
             type.setText(getString(R.string.Source));
         }
         name.setText(t.getName());
@@ -53,7 +53,7 @@ public class ViewTransactionActivity extends AppCompatActivity {
                 setResult(Activity.RESULT_OK, data);
                 finish();
             });
-            alertDialog.setNegativeButton(getString(R.string.cancelButtonText),null);
+            alertDialog.setNegativeButton(getString(R.string.cancelButtonText), null);
             alertDialog.setMessage(getString(R.string.delete_prompt));
             alertDialog.setTitle(getString(R.string.delete_confirm));
             alertDialog.show();

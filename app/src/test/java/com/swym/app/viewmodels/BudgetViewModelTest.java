@@ -1,7 +1,7 @@
 package com.swym.app.viewmodels;
 
-import com.swym.app.data.Deposit;
 import com.swym.app.data.TransactionType;
+import com.swym.app.viewmodels.main.BudgetViewModel;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package com.swym.app.popups;
+package com.swym.app.views;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
@@ -18,6 +18,7 @@ import com.swym.app.data.Transaction;
 import com.swym.app.data.TransactionType;
 import com.swym.app.data.Withdrawal;
 import com.swym.app.viewmodels.CustomViewModelFactory;
+import com.swym.app.viewmodels.EditTransactionViewModel;
 
 import java.text.NumberFormat;
 import java.util.Calendar;

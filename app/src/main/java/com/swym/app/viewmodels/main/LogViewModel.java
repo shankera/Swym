@@ -1,4 +1,4 @@
-package com.swym.app.viewmodels;
+package com.swym.app.viewmodels.main;
 
 import com.swym.app.data.DataSource;
 import com.swym.app.data.Transaction;

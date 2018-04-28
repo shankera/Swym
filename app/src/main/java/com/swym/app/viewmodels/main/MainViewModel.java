@@ -1,4 +1,4 @@
-package com.swym.app.viewmodels;
+package com.swym.app.viewmodels.main;
 
 import android.content.Context;
 

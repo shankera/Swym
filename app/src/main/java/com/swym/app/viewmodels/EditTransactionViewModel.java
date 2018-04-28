@@ -1,4 +1,4 @@
-package com.swym.app.popups;
+package com.swym.app.viewmodels;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;

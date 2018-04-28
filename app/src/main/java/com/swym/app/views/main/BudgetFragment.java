@@ -1,4 +1,4 @@
-package com.swym.app;
+package com.swym.app.views.main;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,13 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.swym.app.R;
 import com.swym.app.data.DataSource;
 import com.swym.app.data.Deposit;
 import com.swym.app.data.TransactionType;
 import com.swym.app.data.Withdrawal;
-import com.swym.app.popups.EditTransactionActivity;
-import com.swym.app.popups.SetBudgetActivity;
-import com.swym.app.viewmodels.BudgetViewModel;
+import com.swym.app.viewmodels.main.BudgetViewModel;
+import com.swym.app.views.EditTransactionActivity;
+import com.swym.app.views.SetBudgetActivity;
 
 import java.text.NumberFormat;
 

@@ -1,4 +1,4 @@
-package com.swym.app;
+package com.swym.app.views.main;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,9 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.swym.app.R;
 import com.swym.app.data.DataSource;
-import com.swym.app.popups.SetBudgetActivity;
-import com.swym.app.viewmodels.MainViewModel;
+import com.swym.app.viewmodels.main.MainViewModel;
+import com.swym.app.views.SetBudgetActivity;
 
 import java.util.Locale;
 

@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class MySQLiteHelper extends SQLiteOpenHelper{
+public class MySQLiteHelper extends SQLiteOpenHelper {
     public static final String TABLE_TRANSACTIONS = "transactions";
     public static final String COLUMN_ID = "_id";
     public static final String COLUMN_NAME = "name";
@@ -24,10 +24,10 @@ public class MySQLiteHelper extends SQLiteOpenHelper{
             + COLUMN_TYPE + " text not null, "
             + COLUMN_COST + " double not null, "
             + COLUMN_DESCRIPTION + " text, "
-            + COLUMN_DATE  + " integer not null, "
+            + COLUMN_DATE + " integer not null, "
             + COLUMN_REAL_DATE + " text);";
 
-    public MySQLiteHelper(Context context){
+    public MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

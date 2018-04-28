@@ -6,7 +6,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.swym.app.data.TransactionType;
-import com.swym.app.popups.EditTransactionViewModel;
 
 
 public class CustomViewModelFactory<S> implements ViewModelProvider.Factory {

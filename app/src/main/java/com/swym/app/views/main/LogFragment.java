@@ -1,4 +1,4 @@
-package com.swym.app;
+package com.swym.app.views.main;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,8 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.swym.app.data.Transaction;
-import com.swym.app.popups.ViewTransactionActivity;
-import com.swym.app.viewmodels.LogViewModel;
+import com.swym.app.viewmodels.main.LogViewModel;
+import com.swym.app.views.ViewTransactionActivity;
 
 public class LogFragment extends android.support.v4.app.ListFragment {
     private LogViewModel viewModel;
