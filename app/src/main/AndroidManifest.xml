@@ -17,18 +17,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".popups.AddWithdrawalActivity"
-            android:label="@string/title_activity_add_purchase" >
+            android:name=".popups.EditTransactionActivity">
             <intent-filter>
-                <action android:name="com.swym.app.AddPurchase" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".popups.AddDepositActivity"
-            android:label="@string/title_activity_add_funds" >
-            <intent-filter>
-                <action android:name="com.swym.app.AddFunds" />
+                <action android:name="com.swym.app.EditTransaction" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

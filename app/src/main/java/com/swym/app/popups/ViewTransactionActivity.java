@@ -33,7 +33,7 @@ public class ViewTransactionActivity extends AppCompatActivity {
         if(t instanceof Withdrawal) {
             type.setText(getString(R.string.Purchase));
         }else{
-            type.setText(getString(R.string.Income));
+            type.setText(getString(R.string.Source));
         }
         name.setText(t.getName());
         NumberFormat fmt = NumberFormat.getCurrencyInstance();

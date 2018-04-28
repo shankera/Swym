@@ -48,7 +48,7 @@
                     android:ems="10"
                     android:id="@+id/enterBudget"
                     android:paddingTop="@dimen/activity_vertical_margin"
-                    android:hint="@string/CostHint"
+                    android:hint="@string/WithdrawalAmountHint"
                     android:editable="true"
                     android:layout_weight="1" />
             </LinearLayout>

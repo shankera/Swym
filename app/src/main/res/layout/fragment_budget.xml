@@ -57,7 +57,7 @@
             android:layout_weight=".5"
             android:clickable="true"
             android:focusable="true"
-            android:text="@string/title_activity_add_purchase" />
+            android:text="@string/title_activity_withdrawal" />
 
         <Button
             android:id="@+id/addFunds"
@@ -66,7 +66,7 @@
             android:layout_weight=".5"
             android:clickable="true"
             android:focusable="true"
-            android:text="@string/title_activity_add_funds" />
+            android:text="@string/title_activity_deposit" />
 
     </LinearLayout>
 </LinearLayout>

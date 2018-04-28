@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import rx.Observable;
+//import rx.Observable;
 
 public class LogViewModel {
     private DataSource dataSource;
@@ -24,11 +24,11 @@ public class LogViewModel {
         vms = new ArrayList<>();
         this.transactions = dataSource.getAllTransactions();
         Collections.reverse(transactions);
-        Observable.from(this.transactions)
-                .map(t -> {
-                    createViewModel(t);
-                    return t;
-                }).subscribe();
+//        Observable.from(this.transactions)
+//                .map(t -> {
+//                    createViewModel(t);
+//                    return t;
+//                }).subscribe();
 
     }
     private void createViewModel(Transaction transaction){
