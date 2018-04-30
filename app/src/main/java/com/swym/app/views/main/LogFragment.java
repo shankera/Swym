@@ -12,34 +12,36 @@ import com.swym.app.viewmodels.main.LogViewModel;
 import com.swym.app.views.ViewTransactionActivity;
 
 public class LogFragment extends android.support.v4.app.ListFragment {
-    private LogViewModel viewModel;
     private final int viewCode = 425;
-    @Override
-    public void onCreate(Bundle savedInstanceState){
-        super.onCreate(savedInstanceState);
-        this.viewModel = new LogViewModel();
-    }
+    private LogViewModel viewModel;
 
     public static LogFragment newInstance() {
         return new LogFragment();
     }
+
     @Override
-    public void onListItemClick(ListView l, View v, int position, long id){
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.viewModel = new LogViewModel();
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
         Intent viewIntent = new Intent(getActivity(), ViewTransactionActivity.class);
         viewIntent.putExtra("Transaction", viewModel.transactions.get(position));
         startActivityForResult(viewIntent, viewCode);
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent){
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        if(resultCode == Activity.RESULT_OK) {
+        if (resultCode == Activity.RESULT_OK) {
             Transaction t = (Transaction) intent.getSerializableExtra("Delete");
             viewModel.deleteTransaction(t);
-//            ((MainActivity)getActivity()).val = 0.0;
         }
     }
-    public void onResume(){
+
+    public void onResume() {
         super.onResume();
         viewModel.refreshVms();
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, viewModel.vms);

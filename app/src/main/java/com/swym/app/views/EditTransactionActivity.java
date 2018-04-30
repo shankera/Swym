@@ -13,10 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.swym.app.R;
-import com.swym.app.data.Deposit;
 import com.swym.app.data.Transaction;
 import com.swym.app.data.TransactionType;
-import com.swym.app.data.Withdrawal;
 import com.swym.app.viewmodels.CustomViewModelFactory;
 import com.swym.app.viewmodels.EditTransactionViewModel;
 
@@ -65,12 +63,7 @@ public class EditTransactionActivity extends AppCompatActivity {
             Intent data = new Intent();
 
             if (!source.getText().toString().isEmpty() && !amount.getText().toString().isEmpty()) {
-                Transaction transaction = null;
-                if (this.transactionType == TransactionType.DEPOSIT) {
-                    transaction = new Deposit();
-                } else if (this.transactionType == TransactionType.WITHDRAWAL) {
-                    transaction = new Withdrawal();
-                }
+                Transaction transaction = this.viewModel.getTransaction();
                 if (transaction != null) {
                     if (!description.getText().toString().isEmpty()) {
                         transaction.setDescription(description.getText().toString());

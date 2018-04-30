@@ -6,14 +6,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class MySQLiteHelper extends SQLiteOpenHelper {
-    public static final String TABLE_TRANSACTIONS = "transactions";
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_TYPE = "type";
-    public static final String COLUMN_COST = "cost";
-    public static final String COLUMN_DATE = "date";
-    public static final String COLUMN_REAL_DATE = "realdate";
-    public static final String COLUMN_DESCRIPTION = "description";
+    static final String TABLE_TRANSACTIONS = "transactions";
+    static final String COLUMN_ID = "_id";
+    static final String COLUMN_NAME = "name";
+    static final String COLUMN_TYPE = "type";
+    static final String COLUMN_COST = "cost";
+    static final String COLUMN_DATE = "date";
+    static final String COLUMN_REAL_DATE = "realdate";
+    static final String COLUMN_DESCRIPTION = "description";
     private static final String DATABASE_NAME = "transactions.db";
     private static final int DATABASE_VERSION = 2;
 
@@ -27,7 +27,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
             + COLUMN_DATE + " integer not null, "
             + COLUMN_REAL_DATE + " text);";
 
-    public MySQLiteHelper(Context context) {
+    MySQLiteHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

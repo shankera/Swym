@@ -72,8 +72,8 @@ public class BudgetFragment extends Fragment {
             startActivityForResult(setBudget, budgetRequestCode);
         });
 
-        bs = (TextView) view.findViewById(R.id.budgetshow);
-        fs = (TextView) view.findViewById(R.id.balanceshow);
+        bs = view.findViewById(R.id.budgetshow);
+        fs = view.findViewById(R.id.balanceshow);
 
         updateTextView(NumberFormat.getCurrencyInstance());
         return view;
@@ -88,7 +88,7 @@ public class BudgetFragment extends Fragment {
         switch (requestCode) {
             case (withdrawalRequestCode):
                 if (resultCode == Activity.RESULT_OK) {
-                    viewModel.addWithdrawal((Withdrawal) intent.getExtras().getSerializable("TRANSACTION_TYPE"));
+                    viewModel.addWithdrawal((Withdrawal) intent.getSerializableExtra("TRANSACTION_TYPE"));
                     updateTextView(NumberFormat.getCurrencyInstance());
                     myPrefs.edit().putFloat(budgetKey, (float) viewModel.budget).apply();
                     myPrefs.edit().putFloat(balanceKey, (float) viewModel.balance).apply();
@@ -96,14 +96,14 @@ public class BudgetFragment extends Fragment {
                 break;
             case (depositRequestCode):
                 if (resultCode == Activity.RESULT_OK) {
-                    viewModel.addDeposit((Deposit) intent.getExtras().getSerializable("TRANSACTION_TYPE"));
+                    viewModel.addDeposit((Deposit) intent.getSerializableExtra("TRANSACTION_TYPE"));
                     myPrefs.edit().putFloat(balanceKey, (float) viewModel.balance).apply();
                     fs.setText(fmt.format(viewModel.balance));
                 }
                 break;
             case (budgetRequestCode):
                 if (resultCode == Activity.RESULT_OK) {
-                    double newBudgetGoal = intent.getExtras().getDouble(budgetGoalKey);
+                    double newBudgetGoal = intent.getDoubleExtra(budgetGoalKey, 0.00);
                     viewModel.updateBudget(newBudgetGoal);
                     edit.putFloat(budgetGoalKey, (float) viewModel.getBudgetGoal()).apply();
                     updateTextView(fmt);
@@ -117,14 +117,14 @@ public class BudgetFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        viewModel.updateBudget(DataSource.getInstance().budgetGoal);
+        viewModel.updateBudget(DataSource.getInstance().getBudgetGoal());
         myPrefs.edit().putFloat(budgetKey, (float) viewModel.budget).apply();
         myPrefs.edit().putFloat(balanceKey, (float) viewModel.balance).apply();
         myPrefs.edit().putFloat(budgetGoalKey, (float) viewModel.getBudgetGoal()).apply();
         updateTextView(NumberFormat.getCurrencyInstance());
     }
 
-    //calculates any expenditures and deducts from the budget then updates the textview
+    //calculates any expenditures and deducts from the budget then updates the TextView
     private void updateTextView(NumberFormat fmt) {
         if (viewModel.budget <= 0.00) {
             bs.setTextColor(Color.RED);

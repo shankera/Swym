@@ -12,36 +12,38 @@ import java.util.List;
 //import rx.Observable;
 
 public class LogViewModel {
-    private DataSource dataSource;
     public ArrayList<String> vms;
     public List<Transaction> transactions;
+    private DataSource dataSource;
+
     public LogViewModel() {
         this.dataSource = DataSource.getInstance();
         refreshVms();
     }
-    public void refreshVms(){
+
+    public void refreshVms() {
         this.transactions = dataSource.getAllTransactions();
         vms = new ArrayList<>();
         this.transactions = dataSource.getAllTransactions();
         Collections.reverse(transactions);
-//        Observable.from(this.transactions)
-//                .map(t -> {
-//                    createViewModel(t);
-//                    return t;
-//                }).subscribe();
+        for (Transaction t : transactions) {
+            createViewModel(t);
+        }
 
     }
-    private void createViewModel(Transaction transaction){
+
+    private void createViewModel(Transaction transaction) {
         vms.add(viewModelString(transaction));
     }
+
     private String viewModelString(Transaction transaction) {
         NumberFormat fmt = NumberFormat.getCurrencyInstance();
         String outputString;
-        if(transaction instanceof Withdrawal)
+        if (transaction instanceof Withdrawal)
             outputString = "-";
         else
             outputString = "+";
-        outputString+=fmt.format(transaction.getCost()) + " - " + transaction.getName();
+        outputString += fmt.format(transaction.getCost()) + " - " + transaction.getName();
         return outputString;
     }
 

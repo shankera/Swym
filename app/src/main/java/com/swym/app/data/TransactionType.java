@@ -1,9 +1,8 @@
 package com.swym.app.data;
 
 public enum TransactionType {
-    TRANSACTION ("Transaction"),
-    WITHDRAWAL ("Withdrawal"),
-    DEPOSIT ("Deposit");
+    WITHDRAWAL("Withdrawal"),
+    DEPOSIT("Deposit");
 
     private final String type;
 

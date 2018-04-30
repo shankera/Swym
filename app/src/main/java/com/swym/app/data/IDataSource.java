@@ -7,6 +7,8 @@ public interface IDataSource {
 
     void setBudgetGoal(double budgetGoal);
 
+    double getBalance();
+
     void createTransaction(String name, double cost, String desc, int date, TransactionType type, String realDate);
 
     void deleteTransaction(Transaction t);

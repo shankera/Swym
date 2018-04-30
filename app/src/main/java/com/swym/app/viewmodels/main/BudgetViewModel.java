@@ -10,7 +10,7 @@ import java.util.List;
 
 public class BudgetViewModel {
     private final double NO_MONEY = 0.00;
-    public boolean hasMoney = false;
+    private boolean hasMoney = false;
     public double budget = 0.00;
     public double balance = 0.00;
     private IDataSource dataSource;
@@ -29,7 +29,7 @@ public class BudgetViewModel {
             this.dataSource.setBudgetGoal(budget);
         }
         if (balance == NO_MONEY && hasMoney) {
-            updateEverything();
+//            updateEverything();
         }
     }
 
@@ -40,15 +40,15 @@ public class BudgetViewModel {
     public void updateEverything() {
         this.transactions = dataSource.getAllTransactions();
         double newBudget = this.dataSource.getBudgetGoal();
-        this.balance = 0.00;
-        for (Transaction transaction : this.transactions) {
-            if (transaction instanceof Withdrawal) {
-                newBudget -= transaction.getCost();
-                this.balance -= transaction.getCost();
-            } else if (transaction instanceof Deposit) {
-                this.balance += transaction.getCost();
-            }
-        }
+//        this.balance = 0.00;
+//        for (Transaction transaction : this.transactions) {
+//            if (transaction instanceof Withdrawal) {
+//                newBudget -= transaction.getCost();
+//                this.balance -= transaction.getCost();
+//            } else if (transaction instanceof Deposit) {
+//                this.balance += transaction.getCost();
+//            }
+//        }
         this.budget = newBudget;
     }
 

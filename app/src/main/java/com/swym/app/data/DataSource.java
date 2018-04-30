@@ -7,10 +7,19 @@ import java.util.List;
 public class DataSource implements IDataSource {
     private static TransactionDataSource dataSource;
     private static DataSource instance;
-    public double budgetGoal;
+    private double balance;
+    private double budgetGoal;
+
+    private DataSource(Context context) {
+        dataSource = new TransactionDataSource(context);
+        dataSource.open();
+
+    }
+
     public static DataSource getInstance(Context context) {
         return instance == null ? instance = new DataSource(context) : instance;
     }
+
     public static DataSource getInstance() {
         if (instance == null) {
             throw new NullPointerException("DataSource has not been initialized");
@@ -21,21 +30,25 @@ public class DataSource implements IDataSource {
     public double getBudgetGoal() {
         return budgetGoal;
     }
+
     public void setBudgetGoal(double budgetGoal) {
         this.budgetGoal = budgetGoal;
     }
-    private DataSource(Context context){
-        dataSource = new TransactionDataSource(context);
-        dataSource.open();
 
+    @Override
+    public double getBalance() {
+        return this.balance;
     }
-    public void createTransaction(String name, double cost, String desc, int date, TransactionType type, String realDate){
+
+    public void createTransaction(String name, double cost, String desc, int date, TransactionType type, String realDate) {
         dataSource.createTransaction(name, cost, desc, date, type, realDate);
     }
-    public void deleteTransaction(Transaction t){
+
+    public void deleteTransaction(Transaction t) {
         dataSource.deleteTransaction(t);
     }
-    public List<Transaction> getAllTransactions(){
+
+    public List<Transaction> getAllTransactions() {
         return dataSource.getAllTransactions();
     }
 }

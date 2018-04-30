@@ -44,7 +44,7 @@ public class ViewTransactionActivity extends AppCompatActivity {
 
         findViewById(R.id.closeButton).setOnClickListener(v -> finish());
         findViewById(R.id.deleteButton).setOnClickListener(view -> {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(ViewTransactionActivity.this);
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
             alertDialog.setPositiveButton(getString(R.string.deleteButtonText), (dialogInterface, i) -> {
 
                 Intent data = new Intent();

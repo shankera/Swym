@@ -5,7 +5,10 @@ import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 
 import com.swym.app.R;
+import com.swym.app.data.Deposit;
+import com.swym.app.data.Transaction;
 import com.swym.app.data.TransactionType;
+import com.swym.app.data.Withdrawal;
 import com.swym.app.utilities.ResourceProvider;
 
 public class EditTransactionViewModel extends ViewModel {
@@ -14,9 +17,11 @@ public class EditTransactionViewModel extends ViewModel {
     public MutableLiveData<String> amountHint = new MutableLiveData<>();
     public MutableLiveData<String> descriptionHint = new MutableLiveData<>();
     private ResourceProvider resourceProvider;
+    private TransactionType transactionType;
 
     public EditTransactionViewModel(Context context, TransactionType transactionType) {
         this.resourceProvider = new ResourceProvider(context);
+        this.transactionType = transactionType;
 
         if (transactionType == TransactionType.WITHDRAWAL) {
             this.title.postValue(this.resourceProvider.getString(R.string.title_activity_withdrawal));
@@ -31,5 +36,15 @@ public class EditTransactionViewModel extends ViewModel {
 
         }
 
+    }
+
+    public Transaction getTransaction() {
+        Transaction transaction = null;
+        if (this.transactionType == TransactionType.DEPOSIT) {
+            transaction = new Deposit();
+        } else if (this.transactionType == TransactionType.WITHDRAWAL) {
+            transaction = new Withdrawal();
+        }
+        return transaction;
     }
 }

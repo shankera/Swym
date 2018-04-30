@@ -100,7 +100,8 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
             case (budgetRequestCode):
                 SharedPreferences.Editor edit = myPrefs.edit();
                 if (resultCode == Activity.RESULT_OK) {
-                    edit.putFloat("BudgetGoal", (float) DataSource.getInstance().budgetGoal).apply();
+                    edit.putFloat("BudgetGoal", (float) DataSource.getInstance().getBudgetGoal()).apply();
+                    edit.putFloat("Balance", (float) DataSource.getInstance().getBalance()).apply();
                     break;
                 }
         }
