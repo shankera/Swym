@@ -35,13 +35,19 @@ public class DataSource implements IDataSource {
         this.budgetGoal = budgetGoal;
     }
 
-    @Override
     public double getBalance() {
         return this.balance;
+    }
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     public void createTransaction(String name, double cost, String desc, int date, TransactionType type, String realDate) {
         dataSource.createTransaction(name, cost, desc, date, type, realDate);
+    }
+
+    public void createTransaction(Transaction transaction, TransactionType type) {
+        dataSource.createTransaction(transaction.getName(), transaction.getCost(), transaction.getDescription(), transaction.getDate(), type, transaction.getRealDate());
     }
 
     public void deleteTransaction(Transaction t) {

@@ -24,6 +24,11 @@ public class DataSourceMock implements IDataSource {
         this.budgetGoal = budgetGoal;
     }
 
+    @Override
+    public double getBalance() {
+        return 0;
+    }
+
     public void createTransaction(String name, double cost, String desc, int date, TransactionType type, String realDate){
         switch (type){
             case WITHDRAWAL:
@@ -34,6 +39,12 @@ public class DataSourceMock implements IDataSource {
                 break;
         }
     }
+
+    @Override
+    public void createTransaction(Transaction transaction, TransactionType type) {
+
+    }
+
     public void deleteTransaction(Transaction t){
         dataSource.remove(t);
     }

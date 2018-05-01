@@ -1,6 +1,7 @@
 package com.swym.app.viewmodels.main;
 
 import com.swym.app.data.DataSource;
+import com.swym.app.data.Deposit;
 import com.swym.app.data.Transaction;
 import com.swym.app.data.Withdrawal;
 
@@ -52,5 +53,10 @@ public class LogViewModel {
         vms.remove(index);
         transactions.remove(index);
         dataSource.deleteTransaction(transaction);
+        if (transaction instanceof Withdrawal) {
+            dataSource.setBalance(dataSource.getBalance() + transaction.getCost());
+        } else if (transaction instanceof Deposit) {
+            dataSource.setBalance(dataSource.getBalance() - transaction.getCost());
+        }
     }
 }

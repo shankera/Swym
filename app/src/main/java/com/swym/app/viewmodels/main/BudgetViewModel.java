@@ -10,7 +10,6 @@ import java.util.List;
 
 public class BudgetViewModel {
     private final double NO_MONEY = 0.00;
-    private boolean hasMoney = false;
     public double budget = 0.00;
     public double balance = 0.00;
     private IDataSource dataSource;
@@ -21,15 +20,12 @@ public class BudgetViewModel {
         this.dataSource = dataSource;
         this.dataSource.setBudgetGoal(budgetGoal);
         this.transactions = dataSource.getAllTransactions();
-        hasMoney = this.transactions != null;
 
         this.budget = budget;
         this.balance = balance;
+        this.dataSource.setBalance(balance);
         if (this.dataSource.getBudgetGoal() == NO_MONEY) {
             this.dataSource.setBudgetGoal(budget);
-        }
-        if (balance == NO_MONEY && hasMoney) {
-//            updateEverything();
         }
     }
 
@@ -37,36 +33,23 @@ public class BudgetViewModel {
         return this.dataSource.getBudgetGoal();
     }
 
-    public void updateEverything() {
-        this.transactions = dataSource.getAllTransactions();
-        double newBudget = this.dataSource.getBudgetGoal();
-//        this.balance = 0.00;
-//        for (Transaction transaction : this.transactions) {
-//            if (transaction instanceof Withdrawal) {
-//                newBudget -= transaction.getCost();
-//                this.balance -= transaction.getCost();
-//            } else if (transaction instanceof Deposit) {
-//                this.balance += transaction.getCost();
-//            }
-//        }
-        this.budget = newBudget;
-    }
-
     public void addWithdrawal(Withdrawal withdrawal) {
         transactions.add(withdrawal);
         balance -= withdrawal.getCost();
         budget -= withdrawal.getCost();
-        dataSource.createTransaction(withdrawal.getName(), withdrawal.getCost(), withdrawal.getDescription(), withdrawal.getDate(), TransactionType.WITHDRAWAL, withdrawal.getRealDate());
+        dataSource.createTransaction(withdrawal, TransactionType.WITHDRAWAL);
+        this.dataSource.setBalance(balance);
     }
 
     public void addDeposit(Deposit deposit) {
         transactions.add(deposit);
         balance += deposit.getCost();
-        dataSource.createTransaction(deposit.getName(), deposit.getCost(), deposit.getDescription(), deposit.getDate(), TransactionType.DEPOSIT, deposit.getRealDate());
+        dataSource.createTransaction(deposit, TransactionType.DEPOSIT);
+        this.dataSource.setBalance(balance);
     }
 
     public double updateBudget(double newBudgetGoal) {
-        double budgetDifference = this.getBudgetGoal() - this.budget;
+        double budgetDifference = this.dataSource.getBudgetGoal() - this.budget;
         this.dataSource.setBudgetGoal(newBudgetGoal);
         this.budget = newBudgetGoal - budgetDifference;
         return this.budget;

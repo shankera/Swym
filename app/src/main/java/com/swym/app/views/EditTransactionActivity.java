@@ -42,6 +42,7 @@ public class EditTransactionActivity extends AppCompatActivity {
         this.viewModel = ViewModelProviders.of(this, new CustomViewModelFactory<>(this, this.transactionType))
                 .get(EditTransactionViewModel.class);
         this.setViewData();
+
         TextView moneySign = findViewById(R.id.money_sign);
         NumberFormat fmt = NumberFormat.getCurrencyInstance();
         moneySign.setText(String.format("%s", fmt.format(0.00).charAt(0)));
@@ -55,12 +56,14 @@ public class EditTransactionActivity extends AppCompatActivity {
                 TextView dateView = findViewById(R.id.deposit_date);
                 dateView.setText(this.dateString);
             };
-            new DatePickerDialog(this, date, myCalendar
-                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+            new DatePickerDialog(this,
+                    date,
+                    myCalendar.get(Calendar.YEAR),
+                    myCalendar.get(Calendar.MONTH),
                     myCalendar.get(Calendar.DAY_OF_MONTH)).show();
         });
         findViewById(R.id.saveButton).setOnClickListener(view -> {
-            Intent data = new Intent();
+            Intent intent = new Intent();
 
             if (!source.getText().toString().isEmpty() && !amount.getText().toString().isEmpty()) {
                 Transaction transaction = this.viewModel.getTransaction();
@@ -72,8 +75,8 @@ public class EditTransactionActivity extends AppCompatActivity {
                     transaction.setName(source.getText().toString());
                     transaction.setRealDate(this.dateString);
                 }
-                data.putExtra("TRANSACTION_TYPE", transaction);
-                setResult(Activity.RESULT_OK, data);
+                intent.putExtra("TRANSACTION_TYPE", transaction);
+                setResult(Activity.RESULT_OK, intent);
                 finish();
             } else {
                 Toast t = Toast.makeText(getApplication(), getString(R.string.funds_toast), Toast.LENGTH_SHORT);

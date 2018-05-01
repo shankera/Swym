@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.swym.app.R;
+import com.swym.app.data.Strings;
 
 import java.text.NumberFormat;
 
@@ -30,7 +31,7 @@ public class SetBudgetActivity extends AppCompatActivity {
             Intent data = new Intent();
             EditText budgetField = findViewById(R.id.enterBudget);
             if (!budgetField.getText().toString().equals("")) {
-                data.putExtra("BudgetGoal", Double.parseDouble(budgetField.getText().toString()));
+                data.putExtra(Strings.budgetGoalKey, Double.parseDouble(budgetField.getText().toString()));
                 setResult(Activity.RESULT_OK, data);
                 finish();
             }
