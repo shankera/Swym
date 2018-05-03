@@ -125,13 +125,7 @@ public class BudgetFragment extends Fragment {
 
     //calculates any expenditures and deducts from the budget then updates the TextView
     private void updateTextView(NumberFormat fmt) {
-        if (viewModel.budget <= 0.00) {
-            bs.setTextColor(Color.RED);
-        } else if (viewModel.budget < (.25 * viewModel.getBudgetGoal())) {
-            bs.setTextColor(Color.YELLOW);
-        } else {
-            bs.setTextColor(Color.GREEN);
-        }
+        bs.setTextColor(viewModel.getColor(viewModel.budget));
         bs.setText(fmt.format(viewModel.budget));
         fs.setText(fmt.format(viewModel.balance));
     }

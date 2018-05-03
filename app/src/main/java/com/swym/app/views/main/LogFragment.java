@@ -2,11 +2,16 @@ package com.swym.app.views.main;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import com.swym.app.data.DataSource;
 import com.swym.app.data.Transaction;
 import com.swym.app.viewmodels.main.LogViewModel;
 import com.swym.app.views.ViewTransactionActivity;
@@ -22,7 +27,7 @@ public class LogFragment extends android.support.v4.app.ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.viewModel = new LogViewModel();
+        this.viewModel = new LogViewModel(DataSource.getInstance());
     }
 
     @Override
@@ -44,7 +49,15 @@ public class LogFragment extends android.support.v4.app.ListFragment {
     public void onResume() {
         super.onResume();
         viewModel.refreshVms();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, viewModel.vms);
-        setListAdapter(adapter);
+        setListAdapter(new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_list_item_1, viewModel.vms) {
+            @NonNull
+            @Override
+            public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView text = view.findViewById(android.R.id.text1);
+                text.setTextColor(Color.parseColor("#afafaf"));
+                return view;
+            }
+        });
     }
 }

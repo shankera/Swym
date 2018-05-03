@@ -1,5 +1,7 @@
 package com.swym.app.viewmodels.main;
 
+import android.graphics.Color;
+
 import com.swym.app.data.Deposit;
 import com.swym.app.data.IDataSource;
 import com.swym.app.data.Transaction;
@@ -53,5 +55,15 @@ public class BudgetViewModel {
         this.dataSource.setBudgetGoal(newBudgetGoal);
         this.budget = newBudgetGoal - budgetDifference;
         return this.budget;
+    }
+
+    public int getColor(double budget){
+        if (budget <= 0.00) {
+            return Color.RED;
+        } else if (budget < (.25 * getBudgetGoal())) {
+            return Color.YELLOW;
+        } else {
+            return Color.GREEN;
+        }
     }
 }

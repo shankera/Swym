@@ -1,5 +1,7 @@
 package com.swym.app.viewmodels.main;
 
+import android.provider.ContactsContract;
+
 import com.swym.app.data.DataSource;
 import com.swym.app.data.Deposit;
 import com.swym.app.data.Transaction;
@@ -17,8 +19,8 @@ public class LogViewModel {
     public List<Transaction> transactions;
     private DataSource dataSource;
 
-    public LogViewModel() {
-        this.dataSource = DataSource.getInstance();
+    public LogViewModel(DataSource dataSource) {
+        this.dataSource = dataSource;
         refreshVms();
     }
 
