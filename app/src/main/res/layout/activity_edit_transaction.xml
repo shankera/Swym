@@ -89,13 +89,23 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toEndOf="@+id/textView1"
-                    android:layout_toLeftOf="@+id/pick_date_button"
+                    android:layout_toLeftOf="@+id/today_button"
                     android:layout_toRightOf="@+id/textView1"
-                    android:layout_toStartOf="@+id/pick_date_button"
+                    android:layout_toStartOf="@+id/today_button"
                     android:paddingLeft="10dp"
                     android:paddingStart="10dp"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     tools:ignore="RtlSymmetry" />
+
+                <Button
+                    android:id="@+id/today_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@+id/pick_date_button"
+                    android:layout_toStartOf="@+id/pick_date_button"
+                    android:layout_gravity="end"
+                    android:text="@string/today"
+                    android:textColor="@android:color/darker_gray" />
 
                 <Button
                     android:id="@+id/pick_date_button"
@@ -106,6 +116,7 @@
                     android:layout_gravity="end"
                     android:text="@string/choose_date"
                     android:textColor="@android:color/darker_gray" />
+
             </RelativeLayout>
 
             <TextView

@@ -14,7 +14,7 @@
     <string name="Cost">Amount</string>
     <string name="Date">Date:</string>
     <string name="DollarSign">$</string>
-    <string name="WithdrawalAmountHint">200.00</string>
+    <string name="WithdrawalAmountHint">20.00</string>
     <string name="DepositAmountHint">923.43</string>
     <string name="Tag">Tag</string>
     <string name="Description">Description</string>
@@ -37,4 +37,5 @@
     <string name="set_budget_info">You can change your budget at any time in the settings menu.</string>
     <string name="zero_dollars">$0.00</string>
     <string name="choose_date">Choose Date</string>
+    <string name="today">Today</string>
 </resources>

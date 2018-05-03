@@ -47,6 +47,12 @@ public class EditTransactionActivity extends AppCompatActivity {
         NumberFormat fmt = NumberFormat.getCurrencyInstance();
         moneySign.setText(String.format("%s", fmt.format(0.00).charAt(0)));
         findViewById(R.id.cancelButton).setOnClickListener(v -> finish());
+        findViewById(R.id.today_button).setOnClickListener(v -> {
+            this.dateString = Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + Calendar.getInstance().get(Calendar.MONTH) + "/" + Calendar.getInstance().get(Calendar.YEAR);
+
+            TextView dateView = findViewById(R.id.deposit_date);
+            dateView.setText(this.dateString);
+        });
         findViewById(R.id.pick_date_button).setOnClickListener(v -> {
             Calendar myCalendar = Calendar.getInstance();
 
