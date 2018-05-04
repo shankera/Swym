@@ -29,6 +29,11 @@ public class DataSourceMock implements IDataSource {
         return 0;
     }
 
+    @Override
+    public void setBalance(double balance) {
+
+    }
+
     public void createTransaction(String name, double cost, String desc, int date, TransactionType type, String realDate){
         switch (type){
             case WITHDRAWAL:

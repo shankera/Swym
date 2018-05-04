@@ -28,7 +28,7 @@
     <string name="title_activity_set_budget">Set Budget</string>
     <string name="budgExpl">Please enter your monthly budget.</string>
     <string name="title_activity_view_transaction">Transaction</string>
-    <string name="funds_toast">Income and Amount cannot be empty</string>
+    <string name="funds_toast">You must enter a Source, Amount, and Date</string>
     <string name="purchase_toast">Purchase and Amount cannot be empty</string>
     <string name="remaining_budget">Remaining Budget</string>
     <string name="current_balance">Current Balance</string>

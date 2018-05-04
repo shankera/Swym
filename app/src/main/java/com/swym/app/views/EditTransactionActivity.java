@@ -71,7 +71,7 @@ public class EditTransactionActivity extends AppCompatActivity {
         findViewById(R.id.saveButton).setOnClickListener(view -> {
             Intent intent = new Intent();
 
-            if (!source.getText().toString().isEmpty() && !amount.getText().toString().isEmpty()) {
+            if (!source.getText().toString().isEmpty() && !amount.getText().toString().isEmpty() && dateString != null && !dateString.isEmpty()) {
                 Transaction transaction = this.viewModel.getTransaction();
                 if (transaction != null) {
                     if (!description.getText().toString().isEmpty()) {
