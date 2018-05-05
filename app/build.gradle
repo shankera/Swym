@@ -28,20 +28,20 @@ android {
         versionCode 3
         versionName "1.0.2"
     }
-    signingConfigs {
-        //Remember to change these when building the release version
-        release {
-            storeFile file("thingfile")
-            storePassword "thingpass"
-            keyAlias "thingalias"
-            keyPassword "otherthingpass"
-        }
-    }
+//    signingConfigs {
+//        //Remember to change these when building the release version
+//        release {
+//            storeFile file("thingfile")
+//            storePassword "thingpass"
+//            keyAlias "thingalias"
+//            keyPassword "otherthingpass"
+//        }
+//    }
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-            signingConfig signingConfigs.release
+//            signingConfig signingConfigs.release
         }
         debug {
             versionNameSuffix ".debug"
