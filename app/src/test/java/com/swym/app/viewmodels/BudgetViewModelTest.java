@@ -17,20 +17,15 @@ public class BudgetViewModelTest {
     private DataSourceMock dataSource;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         this.dataSource = new DataSourceMock();
         this.viewModel = new BudgetViewModel(0.00, 0.00, 250.00, this.dataSource);
     }
 
     @Test
-    public void BudgetViewModel_NewInitialization_ShouldSetDefaults(){
-        assertEquals(250.0, this.viewModel.budget, 0.0);
-        assertEquals(250.0, this.viewModel.getBudgetGoal(), 0.0);
-        assertEquals(0.0, this.viewModel.balance, 0.0);
-    }
-
-    @Test
-    public void BudgetViewModel_AddDeposit_ShouldAdjustBalance(){
+    public void BudgetViewModel_AddDeposit_ShouldAdjustBalance() {
+        this.viewModel.budget = 250;
+        this.dataSource.setBudgetGoal(250);
         assertEquals(250.0, this.viewModel.budget, 0.0);
         assertEquals(250.0, this.viewModel.getBudgetGoal(), 0.0);
         assertEquals(0.0, this.viewModel.balance, 0.0);
@@ -39,8 +34,11 @@ public class BudgetViewModelTest {
         assertEquals(250.0, this.viewModel.getBudgetGoal(), 0.0);
         assertEquals(40.0, this.viewModel.balance, 0.0);
     }
+
     @Test
-    public void BudgetViewModel_AddWithdrawal_ShouldAdjustBalanceAndBudget(){
+    public void BudgetViewModel_AddWithdrawal_ShouldAdjustBalanceAndBudget() {
+        this.viewModel.budget = 250;
+        this.dataSource.setBudgetGoal(250);
         assertEquals(250.0, this.viewModel.budget, 0.0);
         assertEquals(250.0, this.viewModel.getBudgetGoal(), 0.0);
         assertEquals(0.0, this.viewModel.balance, 0.0);
@@ -49,27 +47,29 @@ public class BudgetViewModelTest {
         assertEquals(250.0, this.viewModel.getBudgetGoal(), 0.0);
         assertEquals(-40.0, this.viewModel.balance, 0.0);
     }
+
     @Test
-    public void BudgetViewModel_InitializeWithExistingTransactions_ShouldAdjustBalanceAndBudget(){
+    public void BudgetViewModel_InitializeWithExistingTransactions_ShouldAdjustBalanceAndBudget() {
         this.addStuffToDataSource();
-        this.viewModel = new BudgetViewModel(0.00,0.00,250.0, this.dataSource);
+        this.viewModel = new BudgetViewModel(145.00, 1145.00, 250.0, this.dataSource);
         assertEquals(145.0, this.viewModel.budget, 0.0);
         assertEquals(250.0, this.viewModel.getBudgetGoal(), 0.0);
         assertEquals(1145.0, this.viewModel.balance, 0.0);
     }
 
     @Test
-    public void BudgetViewModel_InitializeWithExistingEverything_ShouldJustSetValues(){
+    public void BudgetViewModel_InitializeWithExistingEverything_ShouldJustSetValues() {
         this.addStuffToDataSource();
-        this.viewModel = new BudgetViewModel(400.00,9000.0,550.0, this.dataSource);
+        this.viewModel = new BudgetViewModel(400.00, 9000.0, 550.0, this.dataSource);
         assertEquals(400.0, this.viewModel.budget, 0.0);
         assertEquals(550.0, this.viewModel.getBudgetGoal(), 0.0);
         assertEquals(9000.0, this.viewModel.balance, 0.0);
     }
+
     @Test
-    public void BudgetViewModel_UpdateBudget_ShouldAdjustBalanceAndBudget(){
+    public void BudgetViewModel_UpdateBudget_ShouldAdjustBalanceAndBudget() {
         this.addStuffToDataSource();
-        this.viewModel = new BudgetViewModel(400.00,9000.0,550.0, this.dataSource);
+        this.viewModel = new BudgetViewModel(400.00, 9000.0, 550.0, this.dataSource);
         assertEquals(400.0, this.viewModel.budget, 0.0);
         assertEquals(550.0, this.viewModel.getBudgetGoal(), 0.0);
         assertEquals(9000.0, this.viewModel.balance, 0.0);
@@ -79,7 +79,7 @@ public class BudgetViewModelTest {
         assertEquals(9000.0, this.viewModel.balance, 0.0);
     }
 
-    private void addStuffToDataSource(){
+    private void addStuffToDataSource() {
         this.dataSource.createTransaction("d1", 1250.0, "", 0, TransactionType.DEPOSIT, "");
         this.dataSource.createTransaction("w1", 100.0, "", 0, TransactionType.WITHDRAWAL, "");
         this.dataSource.createTransaction("w2", 5.0, "", 0, TransactionType.WITHDRAWAL, "");
