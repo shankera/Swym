@@ -1,4 +1,6 @@
 language: android
+before_install:
+  - yes | sdkmanager "platforms;android-27"
 android:
   components:
     - build-tools-26.0.2
