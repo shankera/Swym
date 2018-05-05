@@ -16,7 +16,7 @@
     <string name="DepositSourceHint">급료 </string>
     <string name="Cost">총액</string>
     <string name="Date">날짜</string>
-    <string name="DollarSign">$</string>
+    <string name="DollarSign">₩</string>
     <string name="WithdrawalAmountHint">200000</string>
     <string name="DepositAmountHint">900000</string>
     <string name="Tag">Tag</string>
@@ -38,4 +38,7 @@
     <string name="delete_prompt">거래를 삭제하시겠습니까?</string>
     <string name="delete_confirm">삭제 사실임을 보여주다</string>
     <string name="set_budget_info">설정메뉴에서 예산금액을 언제든 수정할 수 있습니다</string>
+    <string name="zero_dollars">0₩</string>
+    <string name="choose_date">날짜를 선택합니다</string>
+    <string name="today">오늘</string>
 </resources>
